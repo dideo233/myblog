@@ -1,0 +1,53 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.3'
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id 'java'
+}
+
+group = 'com.mycustomblog'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	developmentOnly 'org.springframework.boot:spring-boot-devtools:2.7.3'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.projectlombok:lombok'
+
+	implementation 'mysql:mysql-connector-java:8.0.22'
+
+	//스프링 웹 관련 라이브러리 (웹, JPA, 시큐리티, 유효성 검증 등)
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.3'
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.7.3'
+	implementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
+	implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.3'
+	
+	//시큐리티
+	implementation 'org.springframework.security:spring-security-test:5.7.3'
+	implementation 'org.springframework.security:spring-security-taglibs:5.7.3'
+
+	//시큐리티 Ooath2
+	//implementation 'org.springframework.spring-boot-starter-oauth2-client:2.7.2'
+
+	//타임리프
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.7.3'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
+
+	//git api
+	implementation 'org.kohsuke:github-api:1.303'
+	//객체 매핑용 라이브러리
+	implementation 'org.modelmapper:modelmapper:2.3.8'
+
+	//테스트 시에만 적용
+	//testImplementation 'org.springframework.security:spring-security-test:5.7.3'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
