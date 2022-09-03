@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.mycustomblog.blog.domain.Member;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class PrincipalImpl implements OAuth2User{
@@ -25,12 +26,8 @@ public class PrincipalImpl implements OAuth2User{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<>();
-        collect.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return member.getRole().toString();
-            }
-        });
+        System.out.println(member.getRole().getValue());
+        collect.add(new SimpleGrantedAuthority(member.getRole().getValue()));
         return collect;
     }
 
@@ -38,5 +35,5 @@ public class PrincipalImpl implements OAuth2User{
     public String getName() {
         return member.getUsername();
     }
-
+    public Long getUsernum(){ return member.getUsernum(); }
 }

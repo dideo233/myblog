@@ -14,11 +14,9 @@ public class MainController {
 
     @GetMapping("/login")
     public String loginFrom(@RequestParam(value = "err", required = false) String err, Model model){
-        System.out.println("testsetset22");
         if(err!=null&&err.equals("duplicatedEmail")){
             model.addAttribute("errMsg","이미 가입된 이메일입니다.");
         }
-
         return "login";
     }
 }

@@ -21,7 +21,6 @@ public class LoginFailHandler extends SimpleUrlAuthenticationFailureHandler{
 
         if(exception instanceof OAuth2AuthenticationException) {
             msg = "duplicatedEmail";
-            request.setAttribute("errMsg", msg);
         }
 
         setDefaultFailureUrl("/login?err="+msg);
