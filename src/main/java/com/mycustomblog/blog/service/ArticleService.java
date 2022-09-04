@@ -55,9 +55,18 @@ public class ArticleService {
         });
         return Article.builder()
                 .title(articleDTO.getTitle())
+                .thumbnailUrl(makeDefaultThumb(articleDTO.getThumbnailUrl()))
                 .category(categoryRepository.findByTitle(articleDTO.getCategory()))
                 .content(articleDTO.getContent())
                 .member(member).build();
+    }
+    //디폴트 섬네일
+    private String makeDefaultThumb(String thumbnailUrl) {
+        String defaultThumbUrl = "https://raw.githubusercontent.com/dideo233/imageRepo/main/image/357d64f5-6eea-43e2-a446-1928f2897f85.png";
+        if (thumbnailUrl == null || thumbnailUrl.equals("")) {
+            thumbnailUrl = defaultThumbUrl;
+        }
+        return thumbnailUrl;
     }
 
     //게시글 상세보기
