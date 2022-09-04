@@ -58,10 +58,43 @@ public class ArticleController {
         List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
         model.addAttribute("categoryVOs", categoryVOs);
 
-        ArticleVO article = articleService.findByArticlenum(articlenum);
+        ArticleVO article = articleService.viewAticle(articlenum);
         model.addAttribute("article", article);
         return "article/viewArticle";
     }
+
+    //게시글 수정 화면으로 이동
+    @GetMapping("article/modify")
+    public String modifyArticleForm(@RequestParam Long articlenum, Model model) {
+        List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
+        model.addAttribute("categoryVOs", categoryVOs);
+
+        ArticleDTO articleDto = articleService.getArticleDTOForModify(articlenum);
+        model.addAttribute("articleDto", articleDto);
+        model.addAttribute("articlenum", articlenum);
+        return "article/modifyArticleForm";
+    }
+
+    //게시글 수정
+    @PostMapping("article/modify")
+    public String modifyArticle(@RequestParam Long articlenum,
+                                @ModelAttribute ArticleDTO articleDTO, Authentication authentication) {
+        if(categoryService.findCategory(articleDTO.getCategory()) == null) {//카테고리 유무 판단
+            categoryService.createCategory(articleDTO);
+        }
+        PrincipalImpl principal = (PrincipalImpl) authentication.getPrincipal();
+        articleDTO.setUsernum(principal.getUsernum());
+        articleService.modifyArticle(articlenum, articleDTO);
+        return "redirect:/";
+    }
+
+    //게시글 삭제
+    @PostMapping("article/delete")
+    public String deleteArticle(@RequestParam Long articlenum) {
+        articleService.deleteArticle(articlenum);
+        return "redirect:/";
+    }
+
     //카테고리별 목록
     @GetMapping("article/list")
     public String getArticlesList(@RequestParam String category,

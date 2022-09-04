@@ -25,10 +25,8 @@
             <div class="toolbox container pt-4 pb-4">
               <div class=" ms-5 me-5 d-flex justify-content-end">
                 <a sec:authorize="hasRole('ADMIN')" class="btn btn-secondary" style="color: white"
-                   th:href="@{/article/edit(articlenum=${article.getArticlenum()})}" type="button">수정하기</a>
-                <form th:action="@{/article/delete}" id="deleteArticle" method="post">
-                  <input type="hidden" value="${article.getArticlenum()}">
-                </form>
+                   th:href="@{/article/modify(articlenum=${article.getArticlenum()})}" type="button">수정하기</a>
+                <form method="post" th:action="@{/article/delete(articlenum=${article.getArticlenum()})}" id="deleteFrm"></form>
                 <button sec:authorize="hasRole('ADMIN')" class="btn btn-secondary ms-2" onclick="deleteArticle()">삭제하기</button>
               </div>
             </div>

@@ -1,10 +1,12 @@
 package com.mycustomblog.blog.service;
 
 import com.mycustomblog.blog.domain.Article;
+import com.mycustomblog.blog.domain.Category;
 import com.mycustomblog.blog.domain.Member;
 import com.mycustomblog.blog.dto.ArticleDTO;
 import com.mycustomblog.blog.dto.ArticleVO;
 import com.mycustomblog.blog.repository.ArticleRepository;
+import com.mycustomblog.blog.repository.CategoryMapper;
 import com.mycustomblog.blog.repository.CategoryRepository;
 import com.mycustomblog.blog.repository.MemberRepository;
 import org.kohsuke.github.GHRepository;
@@ -41,6 +43,8 @@ public class ArticleService {
     private final ArticleRepository articleRepository = null;
     @Autowired
     private final CategoryRepository categoryRepository = null;
+    @Autowired
+    private final CategoryMapper categoryMapper = null;
     private final ModelMapper modelMapper = new ModelMapper();
     //글 작성
     @Transactional
@@ -48,6 +52,7 @@ public class ArticleService {
         Article article = createArticleFrom(articleDTO);
         articleRepository.save(article);
     }
+
     //ArticleDTO -> Article
     private Article createArticleFrom(ArticleDTO articleDTO) {
         Member member = memberRepository.findById(articleDTO.getUsernum()).orElseThrow(()->{
@@ -70,9 +75,52 @@ public class ArticleService {
     }
 
     //게시글 상세보기
-    public ArticleVO findByArticlenum(Long articlenum) {
+    public ArticleVO viewAticle(Long articlenum) {
         Article article = articleRepository.findByArticlenum(articlenum);
         return modelMapper.map(article, ArticleVO.class);
+    }
+
+    //게시글 삭제
+    @Transactional
+    public void deleteArticle(Long articlenum) {
+        Article article = articleRepository.findByArticlenum(articlenum);
+        articleRepository.deleteById(articlenum);
+        deleteCategory(article);
+    }
+
+    //수정폼에서 사용할 ArticleDTO 얻기
+    public ArticleDTO getArticleDTOForModify(Long articlenum) {
+        Article article = articleRepository.findByArticlenum(articlenum);
+
+        ArticleDTO articleDTO = new ArticleDTO();
+        articleDTO.setCategory(article.getCategory().getTitle());
+        articleDTO.setContent(article.getContent());
+        articleDTO.setThumbnailUrl(article.getThumbnailUrl());
+        articleDTO.setTitle(article.getTitle());
+        articleDTO.setUsernum(article.getMember().getUsernum());
+
+        return articleDTO;
+        //return modelMapper.map(article, ArticleDTO.class);
+    }
+
+    //게시글 수정
+    @Transactional
+    public void modifyArticle(Long articlenum, ArticleDTO articleDTO) {
+        articleDTO.setThumbnailUrl(makeDefaultThumb(articleDTO.getThumbnailUrl()));
+
+        Article article = articleRepository.findById(articlenum).get();
+        Category category = categoryRepository.findByTitle(articleDTO.getCategory());
+        article.modifyArticle(articleDTO, category);//dirtyChecking
+
+        deleteCategory(article);
+    }
+
+    //게시글 0개인 카테고리 제거
+    private void deleteCategory(Article article) {
+        int count = categoryMapper.getCategoryCount(article.getCategory().getCategorynum());
+        if(count == 0) {
+            categoryRepository.deleteById(article.getCategory().getCategorynum());
+        }
     }
 
     //인기글 리스트
@@ -97,7 +145,7 @@ public class ArticleService {
         Page<Article> articles = articleRepository.findByCategoryOrderByCreatedDateDesc(category, PageRequest.of(pageResolver(page), 5));
         return articles.map(article -> modelMapper.map(article, ArticleVO.class));
     }
-    private int pageResolver(Integer page) {
+    private int pageResolver(Integer page) { //디폴트 페이지 번호
         if (page == null) {return 0;}
         else {return page-1;}
     }
@@ -120,6 +168,7 @@ public class ArticleService {
         String uploadedUrl = "https://raw.githubusercontent.com/"+gitRepo +imgUrl +storeFileName;
         return uploadedUrl;
     }
+
     //UUID.확장자로 변경 (중복 방지)
     private String createStoreFileName(String originalFilename) {
         String ext = extractExt(originalFilename);

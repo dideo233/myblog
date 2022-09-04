@@ -1,14 +1,17 @@
 package com.mycustomblog.blog.domain;
 
+import com.mycustomblog.blog.dto.ArticleDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@DynamicUpdate
 public class Article extends BaseTime{
 
     @Id
@@ -37,6 +40,13 @@ public class Article extends BaseTime{
         this.member = member;
         this.hit = 0L;
         this.thumbnailUrl = thumbnailUrl;
+        this.category = category;
+    }
+
+    public void modifyArticle(ArticleDTO articleForm, Category category){
+        this.content = articleForm.getContent();
+        this.title = articleForm.getTitle();
+        this.thumbnailUrl = articleForm.getThumbnailUrl();
         this.category = category;
     }
 }
