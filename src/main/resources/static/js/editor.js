@@ -109,7 +109,7 @@ function uploadImage(blob) {
     }
 
 }
-function post() {
+function postArticle() {
     if (!checkTitle()) {
         alert("제목을 입력해주세요")
         return;
@@ -118,7 +118,7 @@ function post() {
     document.querySelector("#articleFrm").submit();
 }
 
-function postMobile() {
+function postArticleMobile() {
     if (!checkTitle()) {
         alert("제목을 입력해주세요")
         return;

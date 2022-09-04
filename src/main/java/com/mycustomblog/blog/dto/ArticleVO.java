@@ -3,17 +3,15 @@ package com.mycustomblog.blog.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
+//뷰로 뿌리기 위한 객체
 @Setter
 @Getter
-public class ArticleDTO {
-    @NotBlank
+public class ArticleVO {
+    private Long articlenum;
     private String title;
-    @NotBlank
     private String content;
-    @NotBlank
-    private Long usernum;
     private String thumbnailUrl;
-    private String category;
+    private LocalDateTime createdDate;
 }
