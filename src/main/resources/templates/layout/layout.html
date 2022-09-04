@@ -1,217 +1,115 @@
 <!DOCTYPE html>
-<html th:fragment="layout (head, content)"
+<html th:fragment="layout (content)"
       lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head th:replace="${head}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dideo'sBlog</title>
+
+    <!-- SEO -->
+    <meta name="description" content=""/>
+    <meta name="keyword" content=""/>
+    <meta name="author" content="jinia"/>
+    <meta name="viewport" content="width=device-width,  user-scalable = no, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <!-- OPEN GRAPH(FACEBOOK, LINKEDIN) -->
+    <meta property="og:type" content=""/>
+    <meta property="og:description" content=""/>
+    <meta property="og:title" content=""/>
+    <meta property="og:image" content=""/>
+    <meta property="og:url" content=""/>
+    <meta property="og:site_name" content=""/>
+
+    <!-- twitter -->
+    <meta property="twitter:card" content=""/>
+    <meta property="twitter:title" content=""/>
+    <meta property="twitter:description" content=""/>
+    <meta property="twitter:image" content=""/>
+    <meta property="twitter:url" content=""/>
+    <meta property="twitter:creator" content=""/>
+
+    <link rel="icon" href=""/>
+    <link rel="apple-touch-icon" href=""/>
+    <link rel="short icon" type="image/x-icon" href=""/>
+
+    <!-- CSS RESET -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/login.css"/>
+    <link rel="stylesheet" href="/css/writeForm.css"/>
+
+    <script src="https://kit.fontawesome.com/233840a552.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<header class="fixed-top d-xxl-none p-0">
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid p-0">
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
-                    aria-controls="offcanvasMenu">
-                <i class="fas fa-bars"></i>
+    <header class="fixed-top d-xxl-none p-0">
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid p-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
+                        aria-controls="offcanvasMenu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div id="nav-brand">
+                    <a th:href="@{/}">
+                        <h4>MyCustomBlog</h4>
+                    </a>
+                </div>
+
+                <div id="nav-login" sec:authorize="!isAuthenticated()"><a th:href="@{/login}"><i class="far fa-address-card pe-2"></i></a></div>
+                <div sec:authorize="isAuthenticated()" class="pe-2">
+                    <span sec:authorize="isAuthenticated()" th:text="${#authentication.name} + '님'"></span>
+                    <span sec:authorize="hasRole('ADMIN')" style="font-size: 21px"><a th:href="@{/article/write}"><i class="fas fa-edit"></i></a></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- offcanvas start -->
+        <aside class="offcanvas offcanvas-start " data-bs-scroll="true" style="max-width: 300px;" tabindex="-1"
+               id="offcanvasMenu"
+               aria-labelledby="offcanvasLabel">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+
+            <div class="offcanvas-body bg-white">
+                <div th:replace="layout/sideBar.html :: sideBar"></div>
+            </div>
+        </aside>
+    </header>
+
+    <!-- 실제 body start -->
+    <section class="row g-0 row-cols-xxl-2 g-xxl-0 p-0 ">
+        <!-- sidebar-xxl -->
+        <div class="bg-white sidebar col-xxl-2 d-none d-xxl-block p-0 overflow-auto">
+            <div class="p-4 sidebar-inner">
+                <div th:replace="layout/sideBar.html :: sideBar"></div>
+
+            </div>
+        </div>
+
+        <!-- xxl dummy -->
+        <div class="bg-white col-xxl-2 d-none d-xxl-block p-0">
+        </div>
+
+        <!-- sections -->
+        <div class="col-xxl-10 p-0 sections-container">
+            <section th:replace="${content}"></section>
+            <button id="arrow" class="arrow-up">
+                <i class="fas fa-arrow-up"></i>
             </button>
-            <div id="nav-brand">
-                <a th:href="@{/}">
-                    <h4>MyCustomBlog</h4>
-                </a>
-            </div>
-            <div id="nav-login" sec:authorize="!isAuthenticated()"><a th:href="@{/login}"><i
-                    class="far fa-address-card"></i></a></div>
-
-            <div sec:authorize="isAuthenticated()">
-                <span sec:authorize="isAuthenticated()" th:text="${#authentication.name} + '님'"></span>
-                <span sec:authorize="hasRole('ADMIN')" style="font-size: 21px"><a th:href="@{/article/write}"><i class="fas fa-edit"></i></a></span>
-            </div>
         </div>
-    </nav>
-    <!-- offcanvas start -->
-    <aside class="offcanvas offcanvas-start " data-bs-scroll="true" style="max-width: 300px;" tabindex="-1"
-           id="offcanvasMenu"
-           aria-labelledby="offcanvasLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title">MyCustomBlog</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
+    </section>
+</body>
 
-        <div class="offcanvas-body bg-white">
-            <div href="#" class="d-flex align-items-center pb-3 mb-3 link-dark border-bottom">
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="검색해" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
-                </form>
-            </div>
-
-            <ul class="list-unstyled ps-0">
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#dashboard-collapse1" aria-expanded="true">
-                        카테고리
-                    </button>
-                    <div class="collapse show" id="dashboard-collapse1">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-dark rounded">카테고리1</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리2</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리3</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#dashboard-collapse2" aria-expanded="true">
-                        카테고리
-                    </button>
-                    <div class="collapse show" id="dashboard-collapse2">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-dark rounded">카테고리1</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리2</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리3</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#dashboard-collapse3" aria-expanded="true">
-                        카테고리
-                    </button>
-                    <div class="collapse show" id="dashboard-collapse3">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-dark rounded">카테고리1</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리2</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리3</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="border-top my-3"></li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#account-collapse" aria-expanded="true">
-                        Account
-                    </button>
-                    <div class="collapse show" id="account-collapse">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li sec:authorize="!isAuthenticated()"><a href="#" th:href="@{/login}"
-                                                                      class="link-dark rounded">로그인</a></li>
-                            <li sec:authorize="isAuthenticated()" th:text="${#authentication.name} + '님 환영합니다'"></li>
-                            <li sec:authorize="isAuthenticated()">
-                                <form method="post" id="logoutOC" name="logoutOC" th:action="@{/logout}">
-                                    <a href="#" class="nav-link active" onclick="document.logout.submit()">로그아웃</a>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </aside>
-    <!-- offcanvass end -->
-</header>
-
-<!-- 실제 body start -->
-<section class="row g-0 row-cols-xxl-2 g-xxl-0 p-0 ">
-
-    <!-- sidebar-xxl -->
-    <div class="bg-white sidebar col-xxl-2 d-none d-xxl-block p-0 overflow-auto">
-
-        <div class="p-4 sidebar-inner">
-
-            <div class="m-4 sidebar-header">
-                <a href="/">
-                    <h5 class="text-black-50">MyCustomBlog</h5>
-                </a>
-            </div>
-
-            <div href="#" class="d-flex align-items-center pb-3 mb-3 link-dark border-bottom">
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="검색해" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
-                </form>
-            </div>
-
-            <ul class="list-unstyled ps-0">
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#dashboard-collapse1-xl" aria-expanded="true">
-                        카테고리
-                    </button>
-                    <div class="collapse show" id="dashboard-collapse1-xl">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-dark rounded">카테고리1</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리2</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리3</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#dashboard-collapse2-xl" aria-expanded="true">
-                        카테고리
-                    </button>
-                    <div class="collapse show" id="dashboard-collapse2-xl">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-dark rounded">카테고리1</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리2</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리3</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#dashboard-collapse3-xl" aria-expanded="true">
-                        카테고리
-                    </button>
-                    <div class="collapse show" id="dashboard-collapse3-xl">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-dark rounded">카테고리1</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리2</a></li>
-                            <li><a href="#" class="link-dark rounded">카테고리3</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="border-top my-3"></li>
-                <li class="mb-1">
-                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#account-collapse-xl" aria-expanded="true">
-                        Account
-                    </button>
-                    <div class="collapse show" id="account-collapse-xl">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}"
-                                                                      class="link-dark rounded">로그인</a></li>
-                            <li sec:authorize="isAuthenticated()" th:text="${#authentication.name} + '님 환영합니다'"></li>
-
-                            <li sec:authorize="isAuthenticated()">
-                                <div class="link-dark rounded">
-                                    <form method="post" id="logout" name="logout" th:action="@{/logout}">
-                                        <a href="#" class="nav-link active" onclick="document.logout.submit()">로그아웃</a>
-                                    </form>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-
-        </div>
-    </div>
-    <!-- sidebar e -->
-
-    <!-- xxl dummy -->
-    <div class="bg-white col-xxl-2 d-none d-xxl-block p-0">
-    </div>
-    <!--  -->
-
-    <!-- sections -->
-    <div class="col-xxl-10 p-0 sections-container">
-        <section th:replace="${content}"></section>
-        <button class="arrow-up">
-            <i class="fas fa-arrow-up"></i>
-        </button>
-    </div>
-</section>
-<!-- body end -->
 <!-- js -->
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script src="/js/thumbnail.js"></script>
+<script src="/js/editor.js"></script>
+<script src="/js/arrow.js"></script>
+<script src="/js/etc.js"></script>
 </html>

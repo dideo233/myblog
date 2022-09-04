@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<div th:fragment="sideBar">
+  <div class="m-4 sidebar-header">
+    <a th:href="@{/}">
+      <h5 class="text-black-50">MyCustomBlog</h5>
+    </a>
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{/article/write}" href="#">
+      <h5 class="text-black-50"><i class="fas fa-edit"></i>WRITE</h5>
+    </a>
+  </div>
+  <hr>
+  <!--
+  <div href="#" class="d-flex align-items-center pb-3 mb-3 link-dark border-bottom">
+      <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search Article" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+  </div>
+   -->
+  <ul class="list-unstyled ps-0">
+    <!-- 카테고리 -->
+    <li class="mb-1">
+      <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+              data-bs-target="#category-collapse-xl" aria-expanded="true">
+        카테고리
+      </button>
+      <div class="collapse show"  id="category-collapse-xl">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" th:each="category : ${categoryVOs}">
+          <li><a th:href="@{/article/list(category=${category.getTitle()})}" class="link-dark rounded" th:text="|${category.getTitle()}(${category.getCount()})|"></a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="border-top my-3"></li>
+
+    <!-- 계정 -->
+    <li class="mb-1">
+      <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+              data-bs-target="#account-collapse-xl" aria-expanded="true">
+        Account
+      </button>
+      <div class="collapse show" id="account-collapse-xl">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}" class="link-dark rounded">로그인</a></li>
+          <li sec:authorize="isAuthenticated()" th:text="${#authentication.name} + '님 환영합니다'"></li>
+          <li sec:authorize="isAuthenticated()">
+            <div class="link-dark rounded">
+              <form method="post" id="logout" name="logout" th:action="@{/logout}">
+                <a href="#" class="nav-link active" onclick="logoutFunc()">로그아웃</a>
+              </form>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>
+</html>
