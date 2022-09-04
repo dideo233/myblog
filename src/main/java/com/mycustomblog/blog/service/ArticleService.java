@@ -5,13 +5,28 @@ import com.mycustomblog.blog.domain.Member;
 import com.mycustomblog.blog.dto.ArticleDTO;
 import com.mycustomblog.blog.repository.ArticleRepository;
 import com.mycustomblog.blog.repository.MemberRepository;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
 public class ArticleService {
+    //이미지 서버로 활용하려는 git 설정값
+    @Value("${git.gitToken}")
+    private String gitToken;
+    @Value("${git.imgRepo}")
+    private String gitRepo;
+    @Value("${git.imgUrl}")
+    private String imgUrl;
     @Autowired
     private final MemberRepository memberRepository = null;
     @Autowired
@@ -29,5 +44,36 @@ public class ArticleService {
             throw new IllegalArgumentException("작성자를 확인할 수 없습니다");
         });
         return Article.builder().title(articleDTO.getTitle()).content(articleDTO.getContent()).member(member).build();
+    }
+
+    //작성글에 첨부된 이미지 git으로 업로드
+    public String storeImg(MultipartFile multipartFile) throws IOException {
+        if(multipartFile.isEmpty()) {
+            throw new IllegalArgumentException("파일이 존재하지 않습니다");
+        }
+
+        GitHub gitHub = new GitHubBuilder().withOAuthToken(gitToken).build();
+        GHRepository repository = gitHub.getRepository(gitRepo);
+
+        String originalFilename = multipartFile.getOriginalFilename();
+        String storeFileName = createStoreFileName(originalFilename);
+
+        repository.createContent().path("image/"+storeFileName)
+                .content(multipartFile.getBytes()).message("image Upload").branch("main").commit();
+
+        String uploadedUrl = "https://raw.githubusercontent.com/"+gitRepo +imgUrl +storeFileName;
+        return uploadedUrl;
+    }
+    //UUID.확장자로 변경 (중복 방지)
+    private String createStoreFileName(String originalFilename) {
+        String ext = extractExt(originalFilename);
+        String uuid = UUID.randomUUID().toString();
+        return uuid + "." + ext;
+    }
+    //확장자 추출
+    private String extractExt(String originalFilename) {
+        int pos = originalFilename.lastIndexOf(".");
+        System.out.println(pos);
+        return originalFilename.substring(pos + 1);
     }
 }

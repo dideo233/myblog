@@ -2,6 +2,7 @@ package com.mycustomblog.blog.controller;
 
 import com.mycustomblog.blog.config.auth.PrincipalImpl;
 import com.mycustomblog.blog.dto.ArticleDTO;
+import com.mycustomblog.blog.dto.UploadImgDTO;
 import com.mycustomblog.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
 
 @Controller
 public class ArticleController {
@@ -30,5 +34,10 @@ public class ArticleController {
 
         articleService.writeArticle(articleDTO);
         return "redirect:/";
+    }
+    @PostMapping("article/uploadImg")
+    @ResponseBody
+    public String imgUpload(@ModelAttribute UploadImgDTO uploadImgDTO) throws IOException {
+        return articleService.storeImg(uploadImgDTO.getImg());
     }
 }

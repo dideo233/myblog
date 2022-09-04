@@ -65,6 +65,12 @@ const editor = new toastui.Editor({
         ['code'],
         ['table', 'image', 'link']
     ],
+    hooks: {
+        addImageBlobHook: (blob, callback) => { //이미지 업로드 로직 커스텀. base64로 통쨰로 DB 담기는 것을 경로만 저장하도록 수정
+            let imgurl = uploadImage(blob);
+            callback(imgurl, "첨부 이미지"); //editor로 콜백됨
+        }
+    }
 });
 //에디터 반응형
  editorMobile = new toastui.Editor({
@@ -84,6 +90,25 @@ const editor = new toastui.Editor({
 editor.setMarkdown(contents.value);
 editorMobile.setMarkdown(contents.value);
 
+//이미지 업로드 설정
+function uploadImage(blob) {
+    let csrfToken = null; //getCsrfToken();
+    let formData = new FormData();
+    formData.append('img', blob);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/article/uploadImg", false);
+    xhr.setRequestHeader("contentType", "multipart/form-data");
+    xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+    xhr.send(formData);
+
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        return xhr.response;
+    } else {
+        alert("이미지가 정상적으로 업로드되지 못했습니다.")
+    }
+
+}
 function post() {
     if (!checkTitle()) {
         alert("제목을 입력해주세요")
