@@ -7,7 +7,7 @@ const viewer = toastui.Editor.factory({
 
 const contents = document.querySelector("#contents");
 console.log("test : " + contents.value);
-viewer.setMarkdown(contents.value);\
+viewer.setMarkdown(contents.value);
 
 //게시글 삭제
 function deleteArticle(){

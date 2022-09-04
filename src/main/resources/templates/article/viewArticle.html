@@ -23,11 +23,11 @@
           <div class="ms-2 me-2 p-sm-4 p-2" id="viewer"></div>
           <div class="ms-2 me-2 mb-3 p-sm-4 p-2">
             <div class="toolbox container pt-4 pb-4">
-              <div class=" ms-5 me-5 d-flex justify-content-end">
-                <a sec:authorize="hasRole('ADMIN')" class="btn btn-secondary" style="color: white"
+              <div sec:authorize="hasRole('ADMIN')" class=" ms-5 me-5 d-flex justify-content-end">
+                <a class="btn btn-secondary" style="color: white"
                    th:href="@{/article/modify(articlenum=${article.getArticlenum()})}" type="button">수정하기</a>
                 <form method="post" th:action="@{/article/delete(articlenum=${article.getArticlenum()})}" id="deleteFrm"></form>
-                <button sec:authorize="hasRole('ADMIN')" class="btn btn-secondary ms-2" onclick="deleteArticle()">삭제하기</button>
+                <button class="btn btn-secondary ms-2" onclick="deleteArticle()">삭제하기</button>
               </div>
             </div>
           </div>
@@ -35,10 +35,38 @@
       </div>
 
       <hr class="py-1" style="color: rgb(212, 200, 184);">
-      <!-- 댓글 -->
+      <!-- 댓글 전체 영역-->
+      <span style="display:none" id="articlenumHidden" >[[${article.getArticlenum()}]]</span>
+      <div class="container mt-2 mb-5" style="max-width: 1200px;">
+        <!-- 작성 영역 -->
+        <div sec:authorize="isAuthenticated()" class="ms-2 me-2 mt-3 d-flex align-items-center">
+          <div>
+            <img th:src="${picUrl}" width="50"
+                 height="50"
+                 class="rounded-circle me-2">
+          </div>
+          <textarea id="commentContent" name="commentContent" class="form-control"></textarea>
+        </div>
+        <div sec:authorize="isAuthenticated()" class="d-flex">
+          <div class="ms-auto mt-2 me-2">
+            <button class="btn btn-secondary btn-sm" onclick="commentWrite()">등 록</button>
+          </div>
+        </div>
+
+        <!-- 댓글 리스트 영역-->
+        <div class="row justify-content-center align-items-center g-0 wow fadeInUp p-2">
+          <div class="col">
+            <div id="commentContainer">
+              <div class="mt-2 comment-box" id="commentBox">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
   <script src="/js/viewArticle.js"></script>
+  <script src="/js/comment.js"></script>
   </section>
 </body>
 </html>

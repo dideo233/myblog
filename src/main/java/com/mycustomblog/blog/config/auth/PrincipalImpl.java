@@ -36,4 +36,10 @@ public class PrincipalImpl implements OAuth2User{
         return member.getUsername();
     }
     public Long getUsernum(){ return member.getUsernum(); }
+    public String getMemberPicUrl(){
+        return member.getPicUrl();
+    }
+    public Member getMember(){
+        return member;
+    }
 }

@@ -55,10 +55,10 @@ public class ArticleController {
     public String viewArticle(@RequestParam Long articlenum, Authentication authentication,
                               @CookieValue(required = false, name = "view") String cookie, HttpServletResponse response,
                               Model model) {
-//        if(authentication != null) {
-//            PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-//            model.addAttribute("picUrl", principal.getMemberPicUrl());
-//        } 댓글 작성 회원의 프로필 이미지용
+        if(authentication != null) {
+            PrincipalImpl principal = (PrincipalImpl) authentication.getPrincipal();
+            model.addAttribute("picUrl", principal.getMemberPicUrl());
+        } //댓글 작성 회원의 프로필 이미지용
         
         List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
         model.addAttribute("categoryVOs", categoryVOs);

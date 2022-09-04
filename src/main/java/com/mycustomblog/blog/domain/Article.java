@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,6 +34,9 @@ public class Article extends BaseTime{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categorynum")
     private Category category;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE) //댓글 리스트
+    private List<Comment> commentList = new ArrayList<>();
 
     @Builder
     public Article(String title, String content, Member member, String thumbnailUrl, Category category) {

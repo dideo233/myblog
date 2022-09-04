@@ -91,27 +91,24 @@ public class ArticleService {
         article.addHit();
     }
 
+    //수정폼에서 사용할 ArticleDTO 얻기
+    public ArticleDTO getArticleDTOForModify(Long articlenum) {
+        Article article = articleRepository.findByArticlenum(articlenum);
+
+        return ArticleDTO.builder()
+                .category(article.getCategory().getTitle())
+                .content(article.getContent())
+                .thumbnaulUrl(article.getThumbnailUrl())
+                .title(article.getTitle())
+                .usernum(article.getMember().getUsernum()).build();
+    }
+
     //게시글 삭제
     @Transactional
     public void deleteArticle(Long articlenum) {
         Article article = articleRepository.findByArticlenum(articlenum);
         articleRepository.deleteById(articlenum);
         deleteCategory(article);
-    }
-
-    //수정폼에서 사용할 ArticleDTO 얻기
-    public ArticleDTO getArticleDTOForModify(Long articlenum) {
-        Article article = articleRepository.findByArticlenum(articlenum);
-
-        ArticleDTO articleDTO = new ArticleDTO();
-        articleDTO.setCategory(article.getCategory().getTitle());
-        articleDTO.setContent(article.getContent());
-        articleDTO.setThumbnailUrl(article.getThumbnailUrl());
-        articleDTO.setTitle(article.getTitle());
-        articleDTO.setUsernum(article.getMember().getUsernum());
-
-        return articleDTO;
-        //return modelMapper.map(article, ArticleDTO.class);
     }
 
     //게시글 수정
