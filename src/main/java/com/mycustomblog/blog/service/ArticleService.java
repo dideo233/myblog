@@ -13,6 +13,7 @@ import org.kohsuke.github.GitHubBuilder;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -74,6 +75,17 @@ public class ArticleService {
     //slice : Pageable 인터페이스가 적용되는 경우의 리턴 타입
     public Slice<ArticleVO> getRecentArticles(int page) {
         return articleRepository.findByOrderByCreatedDateDesc(PageRequest.of(page, 5)).map(article -> modelMapper.map(article, ArticleVO.class));
+    }
+
+    //카테고리별 목록 (페이징)
+    public Page<ArticleVO> getArticlePage(String category, Integer page){
+        Page<Article> articles = articleRepository.findByCategoryOrderByCreatedDateDesc(category, PageRequest.of(pageResolver(page), 5));
+        return articles.map(article -> modelMapper.map(article, ArticleVO.class));
+    }
+
+    private int pageResolver(Integer page) {
+        if (page == null) {return 0;}
+        else {return page-1;}
     }
 
     //작성글에 첨부된 이미지 git으로 업로드

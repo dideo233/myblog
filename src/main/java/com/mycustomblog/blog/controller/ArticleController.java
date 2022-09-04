@@ -8,6 +8,7 @@ import com.mycustomblog.blog.dto.UploadImgDTO;
 import com.mycustomblog.blog.service.ArticleService;
 import com.mycustomblog.blog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ public class ArticleController {
         List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
         model.addAttribute("categoryVOs", categoryVOs);
 
-        return "writeForm";
+        return "article/writeForm";
     }
 
     //글 작성
@@ -45,7 +46,17 @@ public class ArticleController {
         articleService.writeArticle(articleDTO);
         return "redirect:/";
     }
+    //카테고리별 목록
+    @GetMapping("article/list")
+    public String getArticlesList(@RequestParam String category,
+                                  @RequestParam(required = false) Integer page, Model model) {
+        List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
+        model.addAttribute("categoryVOs", categoryVOs);
 
+        Page<ArticleVO> articles = articleService.getArticlePage(category, page);
+        model.addAttribute("articles", articles);
+        return "article/listByCategory";
+    }
     //에디터의 업로드 이미지 주소 콜백용
     @PostMapping("article/uploadImg")
     @ResponseBody
