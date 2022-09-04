@@ -5,6 +5,7 @@ import com.mycustomblog.blog.domain.Member;
 import com.mycustomblog.blog.dto.ArticleDTO;
 import com.mycustomblog.blog.dto.ArticleVO;
 import com.mycustomblog.blog.repository.ArticleRepository;
+import com.mycustomblog.blog.repository.CategoryRepository;
 import com.mycustomblog.blog.repository.MemberRepository;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
@@ -37,6 +38,8 @@ public class ArticleService {
     private final MemberRepository memberRepository = null;
     @Autowired
     private final ArticleRepository articleRepository = null;
+    @Autowired
+    private final CategoryRepository categoryRepository = null;
     private final ModelMapper modelMapper = new ModelMapper();
     //글 작성
     @Transactional
@@ -49,7 +52,11 @@ public class ArticleService {
         Member member = memberRepository.findById(articleDTO.getUsernum()).orElseThrow(()->{
             throw new IllegalArgumentException("작성자를 확인할 수 없습니다");
         });
-        return Article.builder().title(articleDTO.getTitle()).content(articleDTO.getContent()).member(member).build();
+        return Article.builder()
+                .title(articleDTO.getTitle())
+                .category(categoryRepository.findByTitle(articleDTO.getCategory()))
+                .content(articleDTO.getContent())
+                .member(member).build();
     }
 
     //인기글 리스트

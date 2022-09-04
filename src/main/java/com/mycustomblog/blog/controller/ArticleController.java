@@ -38,6 +38,10 @@ public class ArticleController {
         PrincipalImpl principal = (PrincipalImpl) authentication.getPrincipal();
         articleDTO.setUsernum(principal.getUsernum());
 
+        if(categoryService.findCategory(articleDTO.getCategory()) == null) {//카테고리 유무 판단
+            categoryService.createCategory(articleDTO);
+        }
+
         articleService.writeArticle(articleDTO);
         return "redirect:/";
     }
