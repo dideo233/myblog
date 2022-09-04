@@ -5,9 +5,9 @@
 <head></head>
 <body>
 <section>
-  <div id="thumbBox" style="display: none">
+  <div id="thumbBox">
     <div class="card d-flex align-items-center justify-content-center thumbBox">
-      <img src="" id="thumbnailPreView" class="card-img-top w-100 vh-100 cover thumbImg" alt="">
+      <img th:src="${articleDto.getThumbnailUrl}" id="thumbnailPreView" class="card-img-top w-100 vh-100 cover thumbImg" alt="">
       <button id="thumbDelBtn" class="thumbDelBtn"><i class="far fa-trash-alt "></i></button>
     </div>
   </div>
@@ -23,7 +23,7 @@
 
       <form class="" method="post" enctype="multipart/form-data" th:object="${articleDTO}"
             th:action="@{/article/modify(articlenum=${articlenum})}"  id="articleFrm">
-        <textarea type="text" name="thumbnailUrl" id="thumbnailUrl" hidden></textarea>
+        <textarea type="text" name="thumbnailUrl" id="thumbnailUrl" hidden>[[${articleDto.getThumbnailUrl()}]]</textarea>
 
         <div class="form-group mt-3 mb-3">
           <input id="category" name="category" type="text" class="form-control ps-3"
