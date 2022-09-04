@@ -1,8 +1,8 @@
-const thumbBox = document.getElementById("thumbBox");
-const uploadThumbBtn = document.getElementById("thumbnail");
-const thumbDel = document.getElementById("thumbDelBtn");
-const previewThumb = document.getElementById("thumbnailPreView");
-const thumbUrl = document.getElementById("thumbnailUrl")
+const thumbBox = document.querySelector("#thumbBox");
+const uploadThumbBtn = document.querySelector("#thumbnail");
+const thumbDel = document.querySelector("#thumbDelBtn");
+const previewThumb = document.querySelector("#thumbnailPreView");
+const thumbUrl = document.querySelector("#thumbnailUrl")
 
 function uploadThumbnailImg(input) {
     if(input.files && input.files[0]) {

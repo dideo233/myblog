@@ -1,6 +1,7 @@
 package com.mycustomblog.blog.controller;
 
 import com.mycustomblog.blog.config.auth.PrincipalImpl;
+import com.mycustomblog.blog.domain.Article;
 import com.mycustomblog.blog.dto.ArticleDTO;
 import com.mycustomblog.blog.dto.ArticleVO;
 import com.mycustomblog.blog.dto.CategoryVO;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -49,17 +52,22 @@ public class ArticleController {
 
     //게시글 상세보기
     @GetMapping("article/view")
-    public String viewArticle(@RequestParam Long articlenum, Model model) {
+    public String viewArticle(@RequestParam Long articlenum, Authentication authentication,
+                              @CookieValue(required = false, name = "view") String cookie, HttpServletResponse response,
+                              Model model) {
 //        if(authentication != null) {
 //            PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
 //            model.addAttribute("picUrl", principal.getMemberPicUrl());
-//        }
-
+//        } 댓글 작성 회원의 프로필 이미지용
+        
         List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
         model.addAttribute("categoryVOs", categoryVOs);
 
         ArticleVO article = articleService.viewAticle(articlenum);
         model.addAttribute("article", article);
+
+        //조회수 카운트 - 브라우저마다 읽은 게시글 정보를 유지. 같은 브라우저에서의 연속적인 조회 카운트를 방지
+        addHitWithCookie(articleService.getArticle(articlenum), cookie, response);
         return "article/viewArticle";
     }
 
@@ -119,5 +127,31 @@ public class ArticleController {
     public @ResponseBody
     List<ArticleVO> nextPage(@PathVariable int pageNum){
         return articleService.getRecentArticles(pageNum).getContent();
+    }
+
+    //조회한 게시글 정보 쿠키
+    private void addHitWithCookie(Article article, String cookie, HttpServletResponse response) {
+        Long articlenum = article.getArticlenum();
+        if (cookie == null) {
+            Cookie viewCookie = new Cookie("view", articlenum + "/");
+            viewCookie.setComment("게시물 조회 중복 체크용 쿠키");
+            viewCookie.setMaxAge(60 * 60);
+            articleService.addHit(article);
+            response.addCookie(viewCookie);
+        } else {
+            boolean isRead = false;
+            String[] viewCookieList = cookie.split("/");
+            for (String alreadyRead : viewCookieList) {
+                if (alreadyRead.equals(String.valueOf(articlenum))) {
+                    isRead = true;
+                    break;
+                }
+            }
+            if (!isRead) {
+                cookie += articlenum + "/";
+                articleService.addHit(article);
+            }
+            response.addCookie(new Cookie("view", cookie)); //@CookeyValue로 읽을 수 있는 듯
+        }
     }
 }

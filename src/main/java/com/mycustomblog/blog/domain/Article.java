@@ -49,4 +49,9 @@ public class Article extends BaseTime{
         this.thumbnailUrl = articleForm.getThumbnailUrl();
         this.category = category;
     }
+
+    public void addHit(){
+        this.hit++;
+    }
+
 }

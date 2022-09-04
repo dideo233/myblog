@@ -65,6 +65,12 @@ public class ArticleService {
                 .content(articleDTO.getContent())
                 .member(member).build();
     }
+
+    //게시글 Entity get
+    public Article getArticle(Long articlenum) {
+        return articleRepository.findByArticlenum(articlenum);
+    }
+
     //디폴트 섬네일
     private String makeDefaultThumb(String thumbnailUrl) {
         String defaultThumbUrl = "https://raw.githubusercontent.com/dideo233/imageRepo/main/image/357d64f5-6eea-43e2-a446-1928f2897f85.png";
@@ -78,6 +84,11 @@ public class ArticleService {
     public ArticleVO viewAticle(Long articlenum) {
         Article article = articleRepository.findByArticlenum(articlenum);
         return modelMapper.map(article, ArticleVO.class);
+    }
+    //게시글 조회수 카운트
+    @Transactional
+    public void addHit(Article article) {
+        article.addHit();
     }
 
     //게시글 삭제
