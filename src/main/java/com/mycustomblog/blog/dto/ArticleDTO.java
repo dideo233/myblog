@@ -14,6 +14,4 @@ public class ArticleDTO {
     private String content;
     @NotBlank
     private Long usernum;
-    private String thumbnailUrl;
-    private String category;
 }

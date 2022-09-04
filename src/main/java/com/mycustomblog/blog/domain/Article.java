@@ -2,41 +2,32 @@ package com.mycustomblog.blog.domain;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
 public class Article extends BaseTime{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ARTICLE_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_generator")
     @Column
     private Long articlenum;
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false, length = 10000)
+    @Column(nullable = false)
     private String content;
-    @Column(columnDefinition = "bigint default 0", nullable = false)
     private Long hit;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usernum")
     private Member member;
     private String thumbnailUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categorynum")
-    private Category category;
-
     @Builder
-    public Article(String title, String content, Member member, String thumbnailUrl, Category category) {
+    public Article(String title, String content, Member member) {
         this.title = title;
         this.content = content;
         this.member = member;
         this.hit = 0L;
-        this.thumbnailUrl = thumbnailUrl;
-        this.category = category;
     }
 }

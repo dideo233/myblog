@@ -3,24 +3,18 @@ package com.mycustomblog.blog.service;
 import com.mycustomblog.blog.domain.Article;
 import com.mycustomblog.blog.domain.Member;
 import com.mycustomblog.blog.dto.ArticleDTO;
-import com.mycustomblog.blog.dto.ArticleVO;
 import com.mycustomblog.blog.repository.ArticleRepository;
 import com.mycustomblog.blog.repository.MemberRepository;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,7 +31,7 @@ public class ArticleService {
     private final MemberRepository memberRepository = null;
     @Autowired
     private final ArticleRepository articleRepository = null;
-    private final ModelMapper modelMapper = new ModelMapper();
+
     //글 작성
     @Transactional
     public void writeArticle(ArticleDTO articleDTO) {
@@ -50,23 +44,6 @@ public class ArticleService {
             throw new IllegalArgumentException("작성자를 확인할 수 없습니다");
         });
         return Article.builder().title(articleDTO.getTitle()).content(articleDTO.getContent()).member(member).build();
-    }
-
-    //인기글 리스트
-    public List<ArticleVO> getPopularArticles() {
-        List<Article> popularArticle = articleRepository.findTop6ByOrderByHitDesc();
-        List<ArticleVO> articles = new ArrayList<>();
-
-        for (Article article : popularArticle) {
-            articles.add(modelMapper.map(article, ArticleVO.class)); //Article -> ArticleVO
-        }
-        return articles;
-    }
-
-    //최신글 리스트
-    //slice : Pageable 인터페이스가 적용되는 경우의 리턴 타입
-    public Slice<ArticleVO> getRecentArticles(int page) {
-        return articleRepository.findByOrderByCreatedDateDesc(PageRequest.of(page, 5)).map(article -> modelMapper.map(article, ArticleVO.class));
     }
 
     //작성글에 첨부된 이미지 git으로 업로드

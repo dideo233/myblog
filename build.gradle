@@ -42,13 +42,9 @@ dependencies {
 	//객체 매핑용 라이브러리
 	implementation 'org.modelmapper:modelmapper:2.3.8'
 
-	//mybatis
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
-
 	//테스트 시에만 적용
 	testImplementation 'org.springframework.security:spring-security-test:5.7.3'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
-
 }
 
 tasks.named('test') {

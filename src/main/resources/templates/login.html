@@ -1,27 +1,67 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/layout.html :: layout(~{::section})}"
+<html th:replace="~{layout/layout.html :: layout(~{::head}, ~{::section})}"
       lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
-<head></head>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login</title>
+
+  <!-- SEO -->
+  <meta name="description" content=""/>
+  <meta name="keyword" content=""/>
+  <meta name="author" content="jinia"/>
+  <meta name="viewport" content="width=device-width,  user-scalable = no, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+  <!-- OPEN GRAPH(FACEBOOK, LINKEDIN) -->
+  <meta property="og:type" content=""/>
+  <meta property="og:description" content=""/>
+  <meta property="og:title" content=""/>
+  <meta property="og:image" content=""/>
+  <meta property="og:url" content=""/>
+  <meta property="og:site_name" content=""/>
+
+  <!-- twitter -->
+  <meta property="twitter:card" content=""/>
+  <meta property="twitter:title" content=""/>
+  <meta property="twitter:description" content=""/>
+  <meta property="twitter:image" content=""/>
+  <meta property="twitter:url" content=""/>
+  <meta property="twitter:creator" content=""/>
+
+  <link rel="icon" href=""/>
+  <link rel="apple-touch-icon" href=""/>
+  <link rel="short icon" type="image/x-icon" href=""/>
+
+  <!-- CSS RESET -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/css/main.css"/>
+  <link rel="stylesheet" href="/css/login.css"/>
+
+  <script src="https://kit.fontawesome.com/233840a552.js" crossorigin="anonymous"></script>
+</head>
 <body>
-  <section>
-    <div style="margin-bottom: 300px"></div>
-    <div class="container">
-      <div class="row">
-        <P class="text-center field-error mt-3" id="capsAlert" th:text="${errMsg}">로그인 오류</P>
-        <div class="col">
-          <a href="/oauth2/authorization/google">
-            <button class="btnCtm btn-google">구글 로그인</button>
-          </a>
-        </div>
-        <div class="col">
-          <a href="/oauth2/authorization/kakao">
-            <button class="btn-kakao"><img src="/image/kakaobtn.png"></button>
-          </a>
-        </div>
+<section>
+  <div style="margin-bottom: 300px"></div>
+  <div class="container">
+    <div class="row">
+      <P class="text-center field-error mt-3" id="capsAlert" th:text="${errMsg}">로그인 오류</P>
+      <div class="col">
+        <a href="/oauth2/authorization/google">
+          <button class="btnCtm btn-google">구글 로그인</button>
+        </a>
+      </div>
+      <div class="col">
+        <a href="/oauth2/authorization/kakao">
+          <button class="btn-kakao"><img src="/image/kakaobtn.png"></button>
+        </a>
       </div>
     </div>
-    <div style="margin-bottom: 300px"></div>
-  </section>
+  </div>
+  <div style="margin-bottom: 300px"></div>
+</section>
 </body>
 </html>
