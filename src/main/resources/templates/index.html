@@ -15,7 +15,7 @@
                 <hr>
                 <div class=" row g-0 row-cols-2 row-cols-md-3">
                     <div class="col g-1 g-md-4" th:each="article,num : ${popularArticles}">
-                        <a href="#">
+                        <a th:href="@{/article/view(articlenum=${article.articlenum})}">
                             <div class=" card ratio ratio-1x1 popular-card " th:style="|background-image: url(${article.getThumbnailUrl()}); background-size: cover;|">
                                 <div class="card-description">
                                     <p th:text="${article.getTitle()}">타이틀</p>
@@ -37,7 +37,7 @@
                 <hr>
                 <div id="articlePage-0">
                     <div class="card mb-3 recent-card" th:each="article,num :${recentArticles.getContent()}">
-                        <a href="#">
+                        <a th:href="@{/article/view(articlenum=${article.articlenum})}">
                             <div class="row g-0">
                                 <div class="col-3">
                                     <div class="ratio ratio-1x1" th:style="|background-image: url(${article.getThumbnailUrl()}); background-size: cover;|"></div>
@@ -54,6 +54,8 @@
                 <div id="nextPagination"></div>
             </div>
         </div>
+
+    <script src="js/infinityScroll.js"></script>
     </section>
 </body>
 </html>

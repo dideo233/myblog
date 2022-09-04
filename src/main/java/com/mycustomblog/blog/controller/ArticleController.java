@@ -46,6 +46,22 @@ public class ArticleController {
         articleService.writeArticle(articleDTO);
         return "redirect:/";
     }
+
+    //게시글 상세보기
+    @GetMapping("article/view")
+    public String viewArticle(@RequestParam Long articlenum, Model model) {
+//        if(authentication != null) {
+//            PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+//            model.addAttribute("picUrl", principal.getMemberPicUrl());
+//        }
+
+        List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
+        model.addAttribute("categoryVOs", categoryVOs);
+
+        ArticleVO article = articleService.findByArticlenum(articlenum);
+        model.addAttribute("article", article);
+        return "article/viewArticle";
+    }
     //카테고리별 목록
     @GetMapping("article/list")
     public String getArticlesList(@RequestParam String category,
@@ -57,6 +73,7 @@ public class ArticleController {
         model.addAttribute("articles", articles);
         return "article/listByCategory";
     }
+
     //에디터의 업로드 이미지 주소 콜백용
     @PostMapping("article/uploadImg")
     @ResponseBody

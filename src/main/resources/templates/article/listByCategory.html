@@ -11,7 +11,7 @@
       <hr>
       <div id="articlePage-0">
         <div class="card mb-3 recent-card wow fadeInUp" th:each="article :${articles.getContent()}">
-          <a href="#">
+          <a th:href="@{/article/view(articlenum=${article.articlenum})}">
             <div class="row g-0">
               <div class="col-3">
                 <div class="ratio ratio-1x1"

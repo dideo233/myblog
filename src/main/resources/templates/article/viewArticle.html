@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layout.html :: layout(~{::section})}"
+      lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
+<head></head>
+<body>
+  <section>
+    <div class="main ">
+      <!-- 게시글 내 썸네일 -->
+      <div class="carousel-inner ">
+        <div class="carousel-item active">
+          <img th:src="${article.getThumbnailUrl()}" class="w-100 vh-100 cover" alt="섬네일">
+          <div class="card-img-overlay text-shadow text-white text-center row justify-content-center align-content-center p-0">
+            <h1 style="font-size: 2.5rem;" th:text="${article.getTitle()}">게시글</h1>
+            <h5 th:text="|작성일 : ${#temporals.format(article.getCreatedDate(), 'yyyy-MM-dd')}|">작성일</h5>
+          </div>
+        </div>
+      </div>
+      <!-- 본문 -->
+      <textarea name="contents" id="contents" th:text="${article.getContent()}" hidden></textarea>
+      <div class="mt-5 ms-2 me-2 ms-sm-5 me-sm-5 mt-sm-5 d-flex justify-content-center">
+        <div class="paper">
+          <div class="ms-2 me-2 p-sm-4 p-2" id="viewer"></div>
+          <div class="ms-2 me-2 mb-3 p-sm-4 p-2">
+            <div class="toolbox container pt-4 pb-4">
+              <div class=" ms-5 me-5 d-flex justify-content-end">
+                <a sec:authorize="hasRole('ADMIN')" class="btn btn-secondary" style="color: white"
+                   th:href="@{/article/edit(articlenum=${article.getArticlenum()})}" type="button">수정하기</a>
+                <form th:action="@{/article/delete}" id="deleteArticle" method="post">
+                  <input type="hidden" value="${article.getArticlenum()}">
+                </form>
+                <button sec:authorize="hasRole('ADMIN')" class="btn btn-secondary ms-2" onclick="deleteArticle()">삭제하기</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="py-1" style="color: rgb(212, 200, 184);">
+      <!-- 댓글 -->
+    </div>
+  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+  <script src="/js/viewArticle.js"></script>
+  </section>
+</body>
+</html>

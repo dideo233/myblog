@@ -20,11 +20,12 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query(value = "SELECT count(*) FROM article, category c where article.categorynum = c.categorynum AND c.title =?1",
             nativeQuery = true)
     int getTotalCntByCategory(String category);
+    //게시글 조회
+    Article findByArticlenum(Long articlenum);
     //무한 스크롤
     Slice<Article> findBy(Pageable pageable);
     //인기글
     List<Article> findTop6ByOrderByHitDesc();
     //최신글
     Slice<Article> findByOrderByCreatedDateDesc(Pageable pageable);
-
 }

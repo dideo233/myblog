@@ -16,7 +16,6 @@ function uploadThumbnailImg(input) {
         xhr.setRequestHeader("X-CSRF-TOKEN", token);
         xhr.send(formData);
 
-        console.log('aasd');
         if (xhr.readyState === 4 && xhr.status === 200) {
             thumbUrl.value = xhr.response;
 

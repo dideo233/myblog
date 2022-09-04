@@ -60,6 +60,12 @@ public class ArticleService {
                 .member(member).build();
     }
 
+    //게시글 상세보기
+    public ArticleVO findByArticlenum(Long articlenum) {
+        Article article = articleRepository.findByArticlenum(articlenum);
+        return modelMapper.map(article, ArticleVO.class);
+    }
+
     //인기글 리스트
     public List<ArticleVO> getPopularArticles() {
         List<Article> popularArticle = articleRepository.findTop6ByOrderByHitDesc();
@@ -82,7 +88,6 @@ public class ArticleService {
         Page<Article> articles = articleRepository.findByCategoryOrderByCreatedDateDesc(category, PageRequest.of(pageResolver(page), 5));
         return articles.map(article -> modelMapper.map(article, ArticleVO.class));
     }
-
     private int pageResolver(Integer page) {
         if (page == null) {return 0;}
         else {return page-1;}

@@ -20,6 +20,7 @@ public class MainController {
     @Autowired
     private final CategoryService categoryService = null;
 
+    //메인화면
     @GetMapping("/")
     public String index(Model model) {
         List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
@@ -34,6 +35,7 @@ public class MainController {
         return "index";
     }
 
+    //로그인 페이지
     @GetMapping("/login")
     public String loginFrom(@RequestParam(value = "err", required = false) String err, Model model){
         if(err!=null&&err.equals("duplicatedEmail")){
