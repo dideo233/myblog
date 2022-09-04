@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class CommentVO {
     private Long commentnum;
     private String content;
+    private Long usernum;
     private String username;
     private String picUrl;
     private boolean secret;
@@ -22,6 +23,7 @@ public class CommentVO {
     @Builder
     public CommentVO(Comment comment) {
         this.commentnum = comment.getCommentnum();
+        this.usernum = comment.getMember().getUsernum();
         this.username = comment.getMember().getUsername();
         this.picUrl = comment.getMember().getPicUrl();
         this.content = comment.getContent();

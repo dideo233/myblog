@@ -10,18 +10,19 @@ import com.mycustomblog.blog.repository.CommentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class CommentService {
     @Autowired
     private final CommentRepository commentRepository = null;
     @Autowired
     private final ArticleRepository articleRepository = null;
 
-    private final ModelMapper modelMapper = new ModelMapper();
     //댓글 가져오기
     public List<CommentVO> getCommentList(Long articlenum){
         List<Comment> commentList = commentRepository.findCommentsByArticlenum(articlenum);
@@ -34,6 +35,7 @@ public class CommentService {
     }
 
     //댓글 작성
+    @Transactional
     public void saveParentComment(CommentDTO commentDto, Member member, Long articlenum){
         Article article = articleRepository.findByArticlenum(articlenum);
         Comment comment = Comment.builder()
@@ -43,4 +45,11 @@ public class CommentService {
                 .build();
         commentRepository.save(comment);
     }
+
+    //댓글 삭제
+    @Transactional
+    public void deleteComment(Long commentnum){
+        commentRepository.deleteById(commentnum);
+    }
+
 }

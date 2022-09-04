@@ -35,15 +35,15 @@
       </div>
 
       <hr class="py-1" style="color: rgb(212, 200, 184);">
-      <!-- 댓글 전체 영역-->
       <span style="display:none" id="articlenumHidden" >[[${article.getArticlenum()}]]</span>
+      <span sec:authorize="!isAuthenticated()"><span style="display:none" id="loginUsernum">-1</span></span>
+      <span sec:authorize="isAuthenticated()"><span style="display:none" id="loginUsernum" sec:authentication="principal.member.usernum"></span></span>
+      <!-- 댓글 전체 영역-->
       <div class="container mt-2 mb-5" style="max-width: 1200px;">
         <!-- 작성 영역 -->
         <div sec:authorize="isAuthenticated()" class="ms-2 me-2 mt-3 d-flex align-items-center">
           <div>
-            <img th:src="${picUrl}" width="50"
-                 height="50"
-                 class="rounded-circle me-2">
+            <img th:src="${picUrl}" width="50" height="50" class="rounded-circle me-2">
           </div>
           <textarea id="commentContent" name="commentContent" class="form-control"></textarea>
         </div>

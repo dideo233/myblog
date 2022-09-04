@@ -42,4 +42,21 @@ public class CommentController {
         return commentList;
     }
 
+
+    //댓글 삭제
+    @PostMapping("/comment/delete")
+    @ResponseBody
+    public List<CommentVO> deleteComment(@RequestParam Long articlenum,
+                                         @RequestParam Long commentnum) {
+
+        System.out.println(articlenum);
+        System.out.println(commentnum);
+
+        commentService.deleteComment(commentnum);
+
+        List<CommentVO> commentList = commentService.getCommentList(articlenum);
+        return commentList;
+    }
+
+    //비밀 댓글
 }
