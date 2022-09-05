@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -22,7 +23,6 @@ public class SecurityConfig{
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.csrf().disable(); //토큰 X
         http.authorizeHttpRequests().antMatchers("/admin/*").hasRole(Role.ADMIN.name())
                 .anyRequest().permitAll()
             .and()
@@ -31,6 +31,9 @@ public class SecurityConfig{
             .and()
                 .logout()
                 .logoutSuccessUrl("/")
+            .and()
+                .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) //csrf 토큰 자동 생성
             .and()
                 .oauth2Login()
                 .loginPage("/login")

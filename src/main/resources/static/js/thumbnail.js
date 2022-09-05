@@ -6,14 +6,14 @@ const thumbUrl = document.querySelector("#thumbnailUrl")
 
 function uploadThumbnailImg(input) {
     if(input.files && input.files[0]) {
-        let token = null;//getCsrfToken();
+        let token = getCsrfToken();
         let formData = new FormData();
         formData.append('img', input.files[0]);
 
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "/article/uploadImg", false);
         xhr.setRequestHeader("contentType", "multipart/form-data");
-        xhr.setRequestHeader("X-CSRF-TOKEN", token);
+        xhr.setRequestHeader("X-XSRF-TOKEN", token);
         xhr.send(formData);
 
         if (xhr.readyState === 4 && xhr.status === 200) {

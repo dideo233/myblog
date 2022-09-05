@@ -24,8 +24,9 @@ function InfinityScroll() {
 //3.받은 게시글을 요소에 추가하고 화면에 렌더링한다.
 function makeNextPage() {
     const xhr = new XMLHttpRequest();
+    token = getCsrfToken();
     xhr.open('GET', "/main/article/" + pageNum); // 페이지 요청보내기
-    // xhr.setRequestHeader("X-XSRF-TOKEN", token);
+    xhr.setRequestHeader("X-XSRF-TOKEN", token);
     xhr.send();
     xhr.onload = () => {
         if (xhr.readyState === xhr.DONE) {

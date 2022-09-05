@@ -92,14 +92,14 @@ editorMobile.setMarkdown(contents.value);
 
 //이미지 업로드 설정
 function uploadImage(blob) {
-    let csrfToken = null; //getCsrfToken();
+    let csrfToken = getCsrfToken();
     let formData = new FormData();
     formData.append('img', blob);
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "/article/uploadImg", false);
     xhr.setRequestHeader("contentType", "multipart/form-data");
-    xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+    xhr.setRequestHeader("X-XSRF-TOKEN", csrfToken);
     xhr.send(formData);
 
     if (xhr.readyState === 4 && xhr.status === 200) {

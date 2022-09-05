@@ -4,7 +4,7 @@ const commentBox = document.querySelector("#commentBox");
 
 //댓글 작성
 function commentWrite() {
-    let token = null;//getCsrfToken();
+    let token = getCsrfToken();
     let content = {content: document.querySelector("#commentContent").value};
 
     const xhr = new XMLHttpRequest();
@@ -22,7 +22,7 @@ function commentWrite() {
 //댓글 리스트 가져오기
 document.addEventListener("DOMContentLoaded",
 	function(){
-		let token = null;//getCsrfToken();
+		let token = getCsrfToken();
 
 	    const xhr = new XMLHttpRequest();
 	    xhr.open("GET", "/comment/list/" + articlenum);
@@ -80,7 +80,7 @@ function addEvent(){ //댓글 클릭 이벤트 부여
 	for(const btn of iconBtn){
 		btn.addEventListener("click", function(event){
 			if(confirm("삭제하겠습니까?")){
-				let token = null;//getCsrfToken();
+				let token = getCsrfToken();
 			    console.log("삭제 댓글 번호 " + event.target.dataset.cnum);
 
 			    const xhr = new XMLHttpRequest();
