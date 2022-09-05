@@ -87,19 +87,27 @@ public class ArticleController {
     @PostMapping("article/modify")
     public String modifyArticle(@RequestParam Long articlenum,
                                 @ModelAttribute ArticleDTO articleDTO, Authentication authentication) {
-        if(categoryService.findCategory(articleDTO.getCategory()) == null) {//카테고리 유무 판단
+        Long categorynum = articleService.getArticle(articlenum).getCategory().getCategorynum(); //기존 카테고리 번호
+
+        if(categoryService.findCategory(articleDTO.getCategory()) == null) {//새로 지정한 카테고리 유무 판단
             categoryService.createCategory(articleDTO);
         }
+
         PrincipalImpl principal = (PrincipalImpl) authentication.getPrincipal();
         articleDTO.setUsernum(principal.getUsernum());
         articleService.modifyArticle(articlenum, articleDTO);
+
+        articleService.deleteCategory(categorynum);
         return "redirect:/";
     }
 
     //게시글 삭제
     @PostMapping("article/delete")
     public String deleteArticle(@RequestParam Long articlenum) {
+        Long categorynum = articleService.getArticle(articlenum).getCategory().getCategorynum(); //기존 카테고리 번호
+
         articleService.deleteArticle(articlenum);
+        articleService.deleteCategory(categorynum);
         return "redirect:/";
     }
 

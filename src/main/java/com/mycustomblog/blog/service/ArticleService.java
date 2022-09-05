@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -106,28 +107,27 @@ public class ArticleService {
     //게시글 삭제
     @Transactional
     public void deleteArticle(Long articlenum) {
-        Article article = articleRepository.findByArticlenum(articlenum);
         articleRepository.deleteById(articlenum);
-        deleteCategory(article);
+        articleRepository.flush();
     }
 
     //게시글 수정
     @Transactional
     public void modifyArticle(Long articlenum, ArticleDTO articleDTO) {
-        articleDTO.setThumbnailUrl(makeDefaultThumb(articleDTO.getThumbnailUrl()));
+        Article article = articleRepository.findByArticlenum(articlenum);
 
-        Article article = articleRepository.findById(articlenum).get();
+        articleDTO.setThumbnailUrl(makeDefaultThumb(articleDTO.getThumbnailUrl()));
         Category category = categoryRepository.findByTitle(articleDTO.getCategory());
         article.modifyArticle(articleDTO, category);//dirtyChecking
-
-        deleteCategory(article);
     }
 
     //게시글 0개인 카테고리 제거
-    private void deleteCategory(Article article) {
-        int count = categoryMapper.getCategoryCount(article.getCategory().getCategorynum());
+    @Transactional
+    public void deleteCategory(Long categorynum) {
+        int count = categoryMapper.getCategoryCount(categorynum);
+
         if(count == 0) {
-            categoryRepository.deleteById(article.getCategory().getCategorynum());
+            categoryRepository.deleteById(categorynum);
         }
     }
 

@@ -48,10 +48,10 @@ public class Article extends BaseTime{
         this.category = category;
     }
 
-    public void modifyArticle(ArticleDTO articleForm, Category category){
-        this.content = articleForm.getContent();
-        this.title = articleForm.getTitle();
-        this.thumbnailUrl = articleForm.getThumbnailUrl();
+    public void modifyArticle(ArticleDTO articleDTO, Category category){
+        this.content = articleDTO.getContent();
+        this.title = articleDTO.getTitle();
+        this.thumbnailUrl = articleDTO.getThumbnailUrl();
         this.category = category;
     }
 
