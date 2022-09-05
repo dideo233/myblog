@@ -33,7 +33,7 @@
       </button>
       <div class="collapse show"  id="category-collapse-xl">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" th:each="category : ${categoryVOs}">
-          <li><a th:href="@{/article/list(category=${category.getTitle()})}" class="link-dark rounded" th:text="|${category.getTitle()}(${category.getCount()})|"></a></li>
+          <li><a th:href="@{/article/list(category=${category.getTitle()}, page=1)}" class="link-dark rounded" th:text="|${category.getTitle()}(${category.getCount()})|"></a></li>
         </ul>
       </div>
     </li>

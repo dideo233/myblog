@@ -120,6 +120,14 @@ public class ArticleController {
 
         Page<ArticleVO> articles = articleService.getArticlePage(category, page);
         model.addAttribute("articles", articles);
+
+        int startNumber = (int)Math.floor((((page-1) / articles.getSize()) * 5) + 1);
+        int endNumber = startNumber+4 > articles.getTotalPages() ? articles.getTotalPages() : startNumber+4;
+
+        model.addAttribute("startNumber", startNumber);
+        model.addAttribute("endNumber", endNumber);
+        model.addAttribute("category",category);
+
         return "article/listByCategory";
     }
 
