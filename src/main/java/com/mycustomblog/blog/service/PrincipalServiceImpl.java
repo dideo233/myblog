@@ -9,6 +9,7 @@ import com.mycustomblog.blog.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 
 @Service
-public class PrincipalServiceImpl extends DefaultOAuth2UserService{
+public class PrincipalServiceImpl extends DefaultOAuth2UserService {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired

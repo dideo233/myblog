@@ -12,11 +12,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @NoArgsConstructor
 @Getter
-public class Member extends BaseTime{
- 	    @Id
+public class Member extends BaseTime implements Serializable{
+	    @Id
 	    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
 	    private Long usernum;
 	
