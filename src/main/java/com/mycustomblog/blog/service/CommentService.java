@@ -4,6 +4,7 @@ import com.mycustomblog.blog.domain.Article;
 import com.mycustomblog.blog.domain.Comment;
 import com.mycustomblog.blog.domain.Member;
 import com.mycustomblog.blog.dto.CommentDTO;
+import com.mycustomblog.blog.dto.CommentForSideVO;
 import com.mycustomblog.blog.dto.CommentVO;
 import com.mycustomblog.blog.repository.ArticleRepository;
 import com.mycustomblog.blog.repository.CommentRepository;
@@ -52,4 +53,14 @@ public class CommentService {
         commentRepository.deleteById(commentnum);
     }
 
+    //최신 댓글
+    public List<CommentForSideVO> recentCommentList(){
+        List<Comment> commentList = commentRepository.findTop5ByOrderByCreatedDateDesc();
+        List<CommentForSideVO> commentForSideVOs = new ArrayList<>();
+
+        for(Comment comment : commentList){
+            commentForSideVOs.add(CommentForSideVO.builder().articlenum(comment.getArticle().getArticlenum()).content(comment.getContent()).build());
+        }
+        return commentForSideVOs;
+    }
 }

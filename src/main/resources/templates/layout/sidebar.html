@@ -27,13 +27,13 @@
   <ul class="list-unstyled ps-0">
     <!-- 카테고리 -->
     <li class="mb-1">
-      <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+      <button class="btn btn-toggle align-items-center rounded collapsed fs-5" data-bs-toggle="collapse"
               data-bs-target="#category-collapse-xl" aria-expanded="true">
         카테고리
       </button>
       <div class="collapse show"  id="category-collapse-xl">
-        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" th:each="category : ${categoryVOs}">
-          <li><a th:href="@{/article/list(category=${category.getTitle()}, page=1)}" class="link-dark rounded" th:text="|${category.getTitle()}(${category.getCount()})|"></a></li>
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li th:each="category : ${categoryVOs}"><a th:href="@{/article/list(category=${category.getTitle()}, page=1)}" class="link-dark rounded" th:text="|${category.getTitle()}(${category.getCount()})|"></a></li>
         </ul>
       </div>
     </li>
@@ -41,7 +41,7 @@
 
     <!-- 계정 -->
     <li class="mb-1">
-      <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+      <button class="btn btn-toggle align-items-center rounded collapsed fs-5" data-bs-toggle="collapse"
               data-bs-target="#account-collapse-xl" aria-expanded="true">
         Account
       </button>
@@ -57,6 +57,19 @@
               </form>
             </div>
           </li>
+        </ul>
+      </div>
+    </li>
+    <li class="border-top my-3"></li>
+
+    <!-- 최신 댓글 -->
+    <li class="mb-1">
+      <button class="btn btn-toggle align-items-center rounded collapsed fs-5" data-bs-toggle="collapse"
+              data-bs-target="#tag-collapse-xl" aria-expanded="true">최신 댓글
+      </button>
+      <div class="collapse show" id="tag-collapse-xl">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li th:each="comment : ${commentVOs}"><a class="comment-side rounded" th:href="@{/article/view(articlenum=${comment.articlenum})}" th:text="${comment.content}"></a></li>
         </ul>
       </div>
     </li>

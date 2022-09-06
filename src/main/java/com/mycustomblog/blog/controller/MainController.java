@@ -2,8 +2,10 @@ package com.mycustomblog.blog.controller;
 
 import com.mycustomblog.blog.dto.ArticleVO;
 import com.mycustomblog.blog.dto.CategoryVO;
+import com.mycustomblog.blog.dto.CommentForSideVO;
 import com.mycustomblog.blog.service.ArticleService;
 import com.mycustomblog.blog.service.CategoryService;
+import com.mycustomblog.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
@@ -19,12 +21,18 @@ public class MainController {
     private final ArticleService articleService = null;
     @Autowired
     private final CategoryService categoryService = null;
+    @Autowired
+    private final CommentService commentService = null;
 
     //메인화면
     @GetMapping("/")
     public String index(Model model) {
-        List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
+        //sidebar에 뿌릴 데이터
+        List<CategoryVO> categoryVOs = categoryService.getCategoryCount();
         model.addAttribute("categoryVOs", categoryVOs);
+
+        List<CommentForSideVO> commentVOs = commentService.recentCommentList();
+        model.addAttribute("commentVOs", commentVOs);
 
         //메인 최신글 및 인기글
         List<ArticleVO> popularArticles = articleService.getPopularArticles();
@@ -42,8 +50,12 @@ public class MainController {
             model.addAttribute("errMsg","이미 가입된 이메일입니다.");
         }
 
-        List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
+        //sidebar에 뿌릴 데이터
+        List<CategoryVO> categoryVOs = categoryService.getCategoryCount();
         model.addAttribute("categoryVOs", categoryVOs);
+
+        List<CommentForSideVO> commentVOs = commentService.recentCommentList();
+        model.addAttribute("commentVOs", commentVOs);
         return "login";
     }
 }

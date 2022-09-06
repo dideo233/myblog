@@ -242,6 +242,9 @@ body::-webkit-scrollbar-track {
 }
 
 @media (max-width: 767.98px) {
+  html{
+    font-size: 13px;
+  }
   small {
     font-size: 10px;
   }
@@ -331,3 +334,22 @@ body::-webkit-scrollbar-track {
   font-size: 14px;
   margin-top: 12px;
 }
+
+.comment-side{
+    max-width: 90%;
+    text-overflow: ellipsis;
+    white-space  : nowrap;
+    overflow     : hidden;
+}
+
+.comment-side:before{
+    content: "\f4ad";
+    font-family: FontAwesome;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 3px;
+
+}
+

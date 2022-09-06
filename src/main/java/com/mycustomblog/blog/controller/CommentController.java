@@ -22,7 +22,6 @@ public class CommentController {
     @ResponseBody
     public List<CommentVO> getCommentList(@PathVariable Long articlenum){
         List<CommentVO> commentVOs = commentService.getCommentList(articlenum);
-        System.out.println("commmentVO 확인");
         return commentVOs;
     }
 
@@ -32,7 +31,6 @@ public class CommentController {
     public List<CommentVO> writeComment(@RequestParam Long articlenum,
                                           @RequestBody CommentDTO commentDto,
                                           Authentication authentication){
-
         PrincipalImpl principal = (PrincipalImpl) authentication.getPrincipal();
         Member member = principal.getMember();
 
@@ -48,10 +46,6 @@ public class CommentController {
     @ResponseBody
     public List<CommentVO> deleteComment(@RequestParam Long articlenum,
                                          @RequestParam Long commentnum) {
-
-        System.out.println(articlenum);
-        System.out.println(commentnum);
-
         commentService.deleteComment(commentnum);
 
         List<CommentVO> commentList = commentService.getCommentList(articlenum);

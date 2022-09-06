@@ -36,7 +36,6 @@ public class SecurityConfig{
             .and()
                 .logout()
                 .logoutSuccessUrl("/")
-                .deleteCookies("JSESSIONID","remember-me")
             .and()
                 .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) //csrf 토큰 자동 생성(요청 시 HttpServletRequest 저장)

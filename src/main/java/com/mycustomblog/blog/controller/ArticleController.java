@@ -2,12 +2,10 @@ package com.mycustomblog.blog.controller;
 
 import com.mycustomblog.blog.config.auth.PrincipalImpl;
 import com.mycustomblog.blog.domain.Article;
-import com.mycustomblog.blog.dto.ArticleDTO;
-import com.mycustomblog.blog.dto.ArticleVO;
-import com.mycustomblog.blog.dto.CategoryVO;
-import com.mycustomblog.blog.dto.UploadImgDTO;
+import com.mycustomblog.blog.dto.*;
 import com.mycustomblog.blog.service.ArticleService;
 import com.mycustomblog.blog.service.CategoryService;
+import com.mycustomblog.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -26,12 +24,18 @@ public class ArticleController {
     private final ArticleService articleService = null;
     @Autowired
     private final CategoryService categoryService = null;
+    @Autowired
+    private final CommentService commentService = null;
 
     //글 작성폼
     @GetMapping("article/write")
     public String writeArticleForm(ArticleDTO articleDTO, Model model){
-        List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
+        //sidebar에 뿌릴 데이터
+        List<CategoryVO> categoryVOs = categoryService.getCategoryCount();
         model.addAttribute("categoryVOs", categoryVOs);
+
+        List<CommentForSideVO> commentVOs = commentService.recentCommentList();
+        model.addAttribute("commentVOs", commentVOs);
 
         return "article/writeForm";
     }
@@ -59,9 +63,13 @@ public class ArticleController {
             PrincipalImpl principal = (PrincipalImpl) authentication.getPrincipal();
             model.addAttribute("picUrl", principal.getMemberPicUrl());
         } //댓글 작성 회원의 프로필 이미지용
-        
-        List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
+
+        //sidebar에 뿌릴 데이터
+        List<CategoryVO> categoryVOs = categoryService.getCategoryCount();
         model.addAttribute("categoryVOs", categoryVOs);
+
+        List<CommentForSideVO> commentVOs = commentService.recentCommentList();
+        model.addAttribute("commentVOs", commentVOs);
 
         ArticleVO article = articleService.viewAticle(articlenum);
         model.addAttribute("article", article);
@@ -74,8 +82,12 @@ public class ArticleController {
     //게시글 수정 화면으로 이동
     @GetMapping("article/modify")
     public String modifyArticleForm(@RequestParam Long articlenum, Model model) {
-        List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
+        //sidebar에 뿌릴 데이터
+        List<CategoryVO> categoryVOs = categoryService.getCategoryCount();
         model.addAttribute("categoryVOs", categoryVOs);
+
+        List<CommentForSideVO> commentVOs = commentService.recentCommentList();
+        model.addAttribute("commentVOs", commentVOs);
 
         ArticleDTO articleDto = articleService.getArticleDTOForModify(articlenum);
         model.addAttribute("articleDto", articleDto);
@@ -115,8 +127,12 @@ public class ArticleController {
     @GetMapping("article/list")
     public String getArticlesList(@RequestParam String category,
                                   @RequestParam(required = false) Integer page, Model model) {
-        List<CategoryVO> categoryVOs = categoryService.getCategoryCount(); //sidebar에 뿌릴 데이터
+        //sidebar에 뿌릴 데이터
+        List<CategoryVO> categoryVOs = categoryService.getCategoryCount();
         model.addAttribute("categoryVOs", categoryVOs);
+
+        List<CommentForSideVO> commentVOs = commentService.recentCommentList();
+        model.addAttribute("commentVOs", commentVOs);
 
         Page<ArticleVO> articles = articleService.getArticlePage(category, page);
         model.addAttribute("articles", articles);
@@ -147,6 +163,7 @@ public class ArticleController {
 
     //조회한 게시글 정보 쿠키
     private void addHitWithCookie(Article article, String cookie, HttpServletResponse response) {
+        System.out.println("조회수 카운트 메서드 호출");
         Long articlenum = article.getArticlenum();
         if (cookie == null) {
             Cookie viewCookie = new Cookie("view", articlenum + "/");
