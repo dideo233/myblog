@@ -25,6 +25,30 @@
   </div>
    -->
   <ul class="list-unstyled ps-0">
+    <!-- 계정 -->
+    <li class="mb-1">
+      <button class="btn btn-toggle align-items-center rounded collapsed fs-5" data-bs-toggle="collapse"
+              data-bs-target="#account-collapse-xl" aria-expanded="true">
+        Account
+      </button>
+      <div class="collapse show" id="account-collapse-xl">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}" class="link-dark rounded">로그인</a></li>
+          <li sec:authorize="hasRole('USER')" class="ms-3" th:text="${#authentication.name} + '님 환영합니다'"></li>
+          <li sec:authorize="hasRole('ADMIN')" class="ms-4" th:text="관리자계정"></li>
+          <li sec:authorize="isAuthenticated()">
+            <div class="link-dark rounded">
+              <form method="post" id="logout" name="logout" th:action="@{/logout}">
+                <a href="#" class="nav-link active" onclick="logoutFunc()">로그아웃</a>
+              </form>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li class="border-top my-3"></li>
+
     <!-- 카테고리 -->
     <li class="mb-1">
       <button class="btn btn-toggle align-items-center rounded collapsed fs-5" data-bs-toggle="collapse"
@@ -39,33 +63,11 @@
     </li>
     <li class="border-top my-3"></li>
 
-    <!-- 계정 -->
-    <li class="mb-1">
-      <button class="btn btn-toggle align-items-center rounded collapsed fs-5" data-bs-toggle="collapse"
-              data-bs-target="#account-collapse-xl" aria-expanded="true">
-        Account
-      </button>
-      <div class="collapse show" id="account-collapse-xl">
-        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-          <li sec:authorize="!isAuthenticated()">
-            <a th:href="@{/login}" class="link-dark rounded">로그인</a></li>
-          <li sec:authorize="isAuthenticated()" th:text="${#authentication.name} + '님 환영합니다'"></li>
-          <li sec:authorize="isAuthenticated()">
-            <div class="link-dark rounded">
-              <form method="post" id="logout" name="logout" th:action="@{/logout}">
-                <a href="#" class="nav-link active" onclick="logoutFunc()">로그아웃</a>
-              </form>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </li>
-    <li class="border-top my-3"></li>
-
     <!-- 최신 댓글 -->
     <li class="mb-1">
       <button class="btn btn-toggle align-items-center rounded collapsed fs-5" data-bs-toggle="collapse"
-              data-bs-target="#tag-collapse-xl" aria-expanded="true">최신 댓글
+              data-bs-target="#tag-collapse-xl" aria-expanded="true">
+        최신 댓글
       </button>
       <div class="collapse show" id="tag-collapse-xl">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">

@@ -1,7 +1,7 @@
 const viewer = toastui.Editor.factory({
     el: document.querySelector('#viewer'),
     viewer: true,
-    height: '500px',
+    height: '800px',
     initialValue: ''
 });
 

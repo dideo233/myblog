@@ -2,8 +2,10 @@ package com.mycustomblog.blog.controller;
 
 import com.mycustomblog.blog.config.auth.PrincipalImpl;
 import com.mycustomblog.blog.domain.Article;
+import com.mycustomblog.blog.domain.ArticleTemp;
 import com.mycustomblog.blog.dto.*;
 import com.mycustomblog.blog.service.ArticleService;
+import com.mycustomblog.blog.service.ArticleTempService;
 import com.mycustomblog.blog.service.CategoryService;
 import com.mycustomblog.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -26,6 +29,8 @@ public class ArticleController {
     private final CategoryService categoryService = null;
     @Autowired
     private final CommentService commentService = null;
+    @Autowired
+    private final ArticleTempService articleTempService = null;
 
     //글 작성폼
     @GetMapping("article/write")
@@ -51,6 +56,8 @@ public class ArticleController {
         }
 
         articleService.writeArticle(articleDTO);
+        articleTempService.deleteArticleTemp(); //글 작성 시 임시저장글 삭제
+
         return "redirect:/";
     }
 
@@ -147,6 +154,27 @@ public class ArticleController {
         return "article/listByCategory";
     }
 
+    //작성 중 게시글 임시 저장
+    @PostMapping("/article/temp/autoSave")
+    @ResponseBody
+    public String autoSaveTemp(@RequestBody ArticleTempDTO articleTempDTO){
+        articleTempService.saveArticleTemp(articleTempDTO);
+        return "OK";
+    }
+
+    //작성 중 게시글 호출
+    @GetMapping("/article/temp/getTemp")
+    @ResponseBody
+    public ArticleTempDTO getTempArticle(){
+        Optional<ArticleTemp> tempArticle = articleTempService.getArticleTemp();
+
+        ArticleTempDTO articleTempDTO = new ArticleTempDTO();
+        articleTempDTO.setContent(tempArticle.orElse(new ArticleTemp()).getContent());
+
+        return articleTempDTO;
+    }
+
+    //------- image 분리 고려 
     //에디터의 업로드 이미지 주소 콜백용
     @PostMapping("article/uploadImg")
     @ResponseBody
