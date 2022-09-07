@@ -38,6 +38,6 @@ public class UserInfoKakao implements Oauth2UserInfo{
 //        Map<String,Object> kakao_account = (Map)attributes.get("kakao_account");
 //        Map<String,Object> profile = (Map) kakao_account.get("profile");
 //        return profile.get("profile_image_url").toString();
-        return "default_profile_image_url";
+        return "/image/defaultProfile.png"; //사용자 동의를 받았는데 프로필 이미지가 null임. 확인 필요
     }
 }
