@@ -27,6 +27,32 @@
                 <a sec:authorize="hasRole('ADMIN')"  class="btn btn-secondary" style="color: white" th:href="@{/article/modify(articlenum=${article.getArticlenum()})}" type="button">수정하기</a>
                 <form method="post" th:action="@{/article/delete(articlenum=${article.getArticlenum()})}" id="deleteFrm"></form>
                 <button sec:authorize="hasRole('ADMIN')" class="btn btn-secondary ms-2" onclick="deleteArticle()">삭제하기</button>
+
+                <!-- 공유하기 -->
+                <div>
+                  <!-- 공유하기 (버튼)-->
+                  <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#shareContent">
+                    <i class="fas fa-share-alt"></i>
+                  </button>
+                  <!-- 공유하기 (모랄창)-->
+                  <div class="modal fade " id="shareContent" tabindex="-1" aria-labelledby="shareContent" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="shareContentModalLabel">Share</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="list-unstyled social-icon-wrap d-flex justify-content-around">
+                            <a href="javascript:shareKakao()" class="social-icon link-icon-kakao">
+                              <i class="fa fa-comment"></i>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div> <!-- 모랄창 end-->
+                </div> <!-- 공유하기 end-->
               </div>
             </div>
           </div>
@@ -70,6 +96,7 @@
   <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
   <script src="/js/viewArticle.js"></script>
   <script src="/js/comment.js"></script>
+  <script src="/js/shared.js"></script>
   </section>
 </body>
 </html>

@@ -56,3 +56,27 @@
     color: black;
     background: #e7fd1e;
 }
+
+.social-icon {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+    border-radius: 25px;
+}
+
+.social-icon i {
+    display: block;
+    z-index: 1;
+    line-height: 80px;
+    font-size: 50px;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+.link-icon-kakao {
+    background: yellow;
+    color: black;
+}
