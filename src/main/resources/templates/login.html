@@ -4,24 +4,24 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
 <head></head>
 <body>
-  <section>
-    <div style="margin-bottom: 300px"></div>
-    <div class="container">
-      <div class="row">
-        <P class="text-center field-error mt-3" id="capsAlert" th:text="${errMsg}">로그인 오류</P>
-        <div class="col">
+  <section class="login-section">
+    <div class="card container login-box">
+      <P class="text-center alert" id="capsAlert" th:text="${errMsg}">로그인 오류</P>
+      <div class="d-flex flex-column card-body align-items-center justify-content-center">
+        <h5>소셜 로그인</h5>
+        <hr/>
+        <div class="col m-2">
           <a href="/oauth2/authorization/google">
-            <button class="btnCtm btn-google">구글 로그인</button> <!-- 리디렉션 URL 수정 필요-->
+            <button class="btnCtm btn-google">구글 로그인</button>
           </a>
         </div>
-        <div class="col">
+        <div class="col m-2">
           <a href="/oauth2/authorization/kakao">
-            <button class="btn-kakao"><img src="/image/kakaobtn.png"></button>
+            <button class="btnCtm btn-kakao">카카오 로그인</button>
           </a>
         </div>
       </div>
     </div>
-    <div style="margin-bottom: 300px"></div>
   </section>
 </body>
 </html>
