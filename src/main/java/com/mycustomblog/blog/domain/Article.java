@@ -22,7 +22,7 @@ public class Article extends BaseTime{
     private Long articlenum;
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false, length = 10000)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
     @Column(columnDefinition = "bigint default 0", nullable = false)
     private Long hit;

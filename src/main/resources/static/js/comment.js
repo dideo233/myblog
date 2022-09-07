@@ -7,6 +7,8 @@ function commentWrite() {
     let token = getCsrfToken();
     let content = {content: document.querySelector("#commentContent").value};
 
+    if(!checkCommentValidate()) {return;}
+
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "/comment/write?articlenum="+articlenum);
     xhr.setRequestHeader("content-type", "application/json");
@@ -14,9 +16,26 @@ function commentWrite() {
     xhr.send(JSON.stringify(content));
 
     xhr.onload = () => {
-        makeCommentBox(xhr, commentBox);
-        document.querySelector("#commentContent").value ='';
+        if (xhr.status === 200 || xhr.status === 201 || xhr.status === 202) {
+            makeCommentBox(xhr, commentBox);
+            document.querySelector("#commentContent").value ='';
+        } else{
+            alert(xhr.response);
+        }
     }
+}
+
+//유효성 체크
+function checkCommentValidate() {
+    let commentContent = document.querySelector("#commentContent");
+    if (commentContent.value === ""){
+        alert("내용을 입력하세요")
+        return false;
+    } else if(contents.value.length >=  65535 ){
+        alert("내용은 250자 미만 입력하세요");
+        return false;
+    }
+    return true;
 }
 
 //댓글 리스트 가져오기

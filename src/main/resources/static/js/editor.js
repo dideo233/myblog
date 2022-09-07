@@ -110,35 +110,36 @@ function uploadImage(blob) {
 
 }
 function postArticle() {
-    if (!checkTitle()) {
-        alert("제목을 입력해주세요")
-        return;
-    }
     contents.value = editor.getMarkdown();
+    if (!checkArticleValidate()) {return;}
     document.querySelector("#articleFrm").submit();
 }
 
-function postArticleMobile() {
-    if (!checkTitle()) {
-        alert("제목을 입력해주세요")
-        return;
-    }
-    contents.value = editorMobile.getMarkdown();
-    document.querySelector("#articleFrm").submit();
-}
-
-function checkTitle() {
+//유효성 체크
+function checkArticleValidate() {
     let title = document.querySelector("#title");
-    if (title.value === "") {
+    let category = document.querySelector("#category");
+    if (category.value === ""){
+        alert("카테고리를 입력하세요")
+        return false;
+    } else if (title.value === "") {
+        alert("제목을 입력하세요")
+        return false;
+    } else if(contents.value === ""){
+        alert("내용을 입력하세요")
+        return false;
+    } else if(contents.value.length >=  65535 ){
+        alert("내용은 65535 미만 용량으로 입력하세요");
         return false;
     }
+
     return true;
 }
 
 // 자동 저장 기능
 function autoSave(){
     let token = getCsrfToken();
-    let tempDto = new Object();
+    let tempDto = {};
     tempDto.content = editor.getMarkdown();
     console.log("auto save...");
 

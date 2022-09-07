@@ -43,7 +43,9 @@
     <script src="https://kit.fontawesome.com/233840a552.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <!-- 모바일 반응형 화면-->
     <header class="fixed-top d-xxl-none p-0">
+        <!-- 헤더 -->
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid p-0">
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
@@ -64,7 +66,7 @@
             </div>
         </nav>
 
-        <!-- offcanvas start -->
+        <!-- 사이드바 -->
         <aside class="offcanvas offcanvas-start " data-bs-scroll="true" style="max-width: 300px;" tabindex="-1"
                id="offcanvasMenu"
                aria-labelledby="offcanvasLabel">
@@ -78,21 +80,18 @@
         </aside>
     </header>
 
-    <!-- 실제 body start -->
+    <!-- 브라우저 화면 -->
     <section class="row g-0 row-cols-xxl-2 g-xxl-0 p-0 ">
-        <!-- sidebar-xxl -->
+        <!-- 사이드바 -->
         <div class="bg-white sidebar col-xxl-2 d-none d-xxl-block p-0 overflow-auto">
             <div class="p-4 sidebar-inner">
                 <div th:replace="layout/sideBar.html :: sideBar"></div>
 
             </div>
         </div>
+        <div class="bg-white col-xxl-2 d-none d-xxl-block p-0"></div>
 
-        <!-- xxl dummy -->
-        <div class="bg-white col-xxl-2 d-none d-xxl-block p-0">
-        </div>
-
-        <!-- sections -->
+        <!-- 본문 -->
         <div class="col-xxl-10 p-0 sections-container">
             <section th:replace="${content}"></section>
             <button id="arrow" class="arrow-up">
@@ -101,7 +100,6 @@
         </div>
     </section>
 </body>
-
 <!-- js -->
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
