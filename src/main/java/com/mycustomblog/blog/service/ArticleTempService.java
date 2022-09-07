@@ -14,10 +14,9 @@ public class ArticleTempService {
     private final ArticleTempRepository articleTempRepository = null;
 
     //임시 저장
-    public ArticleTemp saveArticleTemp(ArticleTempDTO articleTempDTO){
+    public void saveArticleTemp(ArticleTempDTO articleTempDTO){
         ArticleTemp articleTemp = new ArticleTemp(articleTempDTO.getContent());
         articleTempRepository.save(articleTemp);
-        return articleTemp;
     }
 
     //임시 저장된 글 get

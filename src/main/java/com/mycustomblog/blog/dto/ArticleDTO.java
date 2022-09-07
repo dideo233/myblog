@@ -18,6 +18,7 @@ public class ArticleDTO {
     @NotBlank
     private Long usernum;
     private String thumbnailUrl;
+    @NotBlank
     private String category;
 
     @Builder

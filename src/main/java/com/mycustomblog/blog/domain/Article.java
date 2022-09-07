@@ -27,12 +27,12 @@ public class Article extends BaseTime{
     @Column(columnDefinition = "bigint default 0", nullable = false)
     private Long hit;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usernum")
+    @JoinColumn(name = "usernum", nullable = false)
     private Member member;
     private String thumbnailUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categorynum")
+    @JoinColumn(name = "categorynum", nullable = false)
     private Category category;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE) //댓글 리스트

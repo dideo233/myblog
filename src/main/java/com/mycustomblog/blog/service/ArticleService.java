@@ -143,7 +143,7 @@ public class ArticleService {
     }
 
     //최신글 리스트
-    //slice : Pageable 인터페이스가 적용되는 경우의 리턴 타입
+    //slice : Page와 달리 totalCount 구하는 데 쿼리 안 씀
     public Slice<ArticleVO> getRecentArticles(int page) {
         return articleRepository.findByOrderByCreatedDateDesc(PageRequest.of(page, 5)).map(article -> modelMapper.map(article, ArticleVO.class));
     }

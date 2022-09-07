@@ -183,7 +183,7 @@ public class ArticleController {
     }
 
     //무한 스크롤
-    @GetMapping("/main/article/{pageNum}")
+    @GetMapping("/article/scroll/{pageNum}")
     public @ResponseBody
     List<ArticleVO> nextPage(@PathVariable int pageNum){
         return articleService.getRecentArticles(pageNum).getContent();

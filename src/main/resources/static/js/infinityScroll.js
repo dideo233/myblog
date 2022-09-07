@@ -25,7 +25,7 @@ function InfinityScroll() {
 function makeNextPage() {
     const xhr = new XMLHttpRequest();
     token = getCsrfToken();
-    xhr.open('GET', "/main/article/" + pageNum); // 페이지 요청보내기
+    xhr.open('GET', "/article/scroll/" + pageNum); // 페이지 요청보내기
     xhr.setRequestHeader("X-XSRF-TOKEN", token);
     xhr.send();
     xhr.onload = () => {
@@ -33,6 +33,8 @@ function makeNextPage() {
             if (xhr.status === 200 || xhr.status === 201 || xhr.status === 202) {
                 let list = JSON.parse(xhr.response);
                 console.log(list);
+                //반환 게시글 없을 시 return
+                if(list.length === 0) return;
 
                 // 다음 페이지 작성
                 const nextPage = document.createElement('div');
