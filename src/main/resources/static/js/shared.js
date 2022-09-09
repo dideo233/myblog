@@ -1,11 +1,15 @@
+let articleTitle = document.querySelector("#articleTitle").innerHTML;
+let articleThumbnailUrl = document.querySelector("#articleThumbnailUrl").getAttribute("src");
+
 Kakao.init('5a527df409aef2f6edf4c84474597310');
     function shareKakao() {
+    console.log(articleTitle);
+    console.log(articleThumbnailUrl);
     Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
-            title: "title - Dideo'sLog",
-            description: "카카오 공유하기 테스트",
-            imageUrl:"https://raw.githubusercontent.com/dideo233/imageRepo/main/image/1e0aba4f-0de3-4adc-a749-712d03734b6c.png",
+            title: articleTitle + "- Dideo'sBlog",
+            imageUrl:articleThumbnailUrl,
             link: {
                 mobileWebUrl: window.location.href,
                 webUrl: window.location.href,
@@ -15,7 +19,7 @@ Kakao.init('5a527df409aef2f6edf4c84474597310');
             {
                 title: '웹으로 보기',
                 link: {
-                    mobileWebUrl: window.location.href ,
+                    mobileWebUrl: window.location.href,
                     webUrl: window.location.href,
                 },
             }

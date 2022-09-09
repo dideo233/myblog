@@ -9,9 +9,9 @@
       <!-- 게시글 내 썸네일 -->
       <div class="carousel-inner ">
         <div class="carousel-item active">
-          <img th:src="${article.getThumbnailUrl()}" class="w-100 vh-100 cover" alt="섬네일">
+          <img th:src="${article.getThumbnailUrl()}" class="w-100 vh-100 cover" id="articleThumbnailUrl" alt="섬네일">
           <div class="card-img-overlay text-shadow text-white text-center row justify-content-center align-content-center p-0">
-            <h1 style="font-size: 2.5rem;" th:text="${article.getTitle()}">게시글</h1>
+            <h1 style="font-size: 2.5rem;" th:text="${article.getTitle()}" id="articleTitle">게시글</h1>
             <h5 th:text="|작성일 : ${#temporals.format(article.getCreatedDate(), 'yyyy-MM-dd')}|">작성일</h5>
           </div>
         </div>
