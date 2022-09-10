@@ -10,6 +10,7 @@ branches:
 
 before_install:
   - chmod +x gradlew
+  - chmod +x deploy.sh
 
 before_deploy:
   - mkdir -p before-deploy #zip에 포함시킬 파일을 담을 디렉토리 생성
