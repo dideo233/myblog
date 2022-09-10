@@ -1,0 +1,23 @@
+language: java
+jdk:
+  - openjdk11
+
+#master 브랜치 push 시 travis CI 수행
+branches:
+  only:
+    - master
+
+# travis CI 서버 home
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+
+#master 브랜치 push 시 수행
+script: "./gradlew clean build"
+
+# CI 실행 완료 시 메일로 알람
+notifications:
+  email:
+    recipients:
+      - eltmvpdj11@gmail.com
