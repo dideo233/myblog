@@ -1,0 +1,7 @@
+#CodeDeploy 설정 파일
+version: 0.0
+os: linux
+files:
+  - source: / #이동 대상. 루트(/)는 전체 파일
+    destination: /home/ec2-user/app/myblog/zip/ #목적지
+    overwrite: yes #덮어쓰기

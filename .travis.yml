@@ -1,3 +1,4 @@
+#Travis 설정 파일
 language: java
 jdk:
   - openjdk11
@@ -17,6 +18,7 @@ before_deploy:
 
 #외부 서비스와 연동될 행위 선언
 deploy:
+  #AWS S3 설정
   - provider: s3
     #Travis Repo에 세팅된 key
     access_key_id: $AWS_ACCESS_KEY
@@ -30,6 +32,19 @@ deploy:
     on:
       all_branches: true
 
+  #AWS CodeDeploy 설정
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: myblog-webservice-build #S3 버킷
+    key: myblog.zip #빌드 파일 압축해서 전달
+    bundle_type: zip #압축 확장자
+    application: myblog-webservice #CodeDeploy 어플리케이션
+    deployment_group: myblog-webservice-group #CodeDeploy 배포 그룹
+    region: ap-northeast-2
+    wait-until-deployed: true
+    on:
+      all_branches: true
 
 # travis CI 서버 home
 cache:
