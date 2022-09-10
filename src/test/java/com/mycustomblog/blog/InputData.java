@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
-@SpringBootTest
+//@SpringBootTest
 @Transactional
 @Rollback(value = false)
 public class InputData {
@@ -35,7 +35,7 @@ public class InputData {
     @Autowired
     CategoryService categoryService;
     
-    @BeforeEach //Test 메서드 실행 이전에 실행
+    //@BeforeEach //Test 메서드 실행 이전에 실행
     void dummyDataCreate() {
     	principalServiceImpl.insertAdmin(); //관리자 계정 생성
     	
@@ -64,7 +64,7 @@ public class InputData {
         } //카테고리별 게시글 추가
     }		
 
-    @Test 
+    //@Test
     public void articleTest() throws Exception {
     }
 }
