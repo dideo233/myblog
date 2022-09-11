@@ -31,7 +31,6 @@
     <link rel="stylesheet" href="/css/login.css"/>
     <link rel="stylesheet" href="/css/writeForm.css"/>
     <link rel="stylesheet" href="/css/viewArticle.css"/>
-
     <script src="https://kit.fontawesome.com/233840a552.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -49,7 +48,6 @@
                     <h4>MyCustomBlog</h4>
                 </a>
             </div>
-
             <div id="nav-login" sec:authorize="!isAuthenticated()"><a th:href="@{/login}"><i class="far fa-address-card pe-2"></i></a></div>
             <div sec:authorize="isAuthenticated()" class="pe-2">
                 <span sec:authorize="isAuthenticated()" th:text="${#authentication.name} + '님'"></span>
