@@ -41,8 +41,8 @@ dependencies {
 	implementation 'org.springframework.session:spring-session-jdbc'
 
 	//타임리프
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.7.3'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
 	//git api
 	implementation 'org.kohsuke:github-api:1.303'
