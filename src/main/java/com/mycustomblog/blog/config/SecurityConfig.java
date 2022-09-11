@@ -41,7 +41,7 @@ public class SecurityConfig{
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) //csrf 토큰 자동 생성(요청 시 HttpServletRequest 저장)
             .and()
                 .requiresChannel()
-                .antMatchers("/login*").requiresSecure()
+                .antMatchers("/login").requiresSecure()
             .and()
                 .oauth2Login()
                 .loginPage("/login")
