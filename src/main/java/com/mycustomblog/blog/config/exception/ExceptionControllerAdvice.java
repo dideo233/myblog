@@ -19,7 +19,7 @@ public class ExceptionControllerAdvice {
         } else {
             log.info("requested '{}'", req.getRequestURI());
         }
-        log.error("bad request", e.getMessage());
+        log.error("bad request", e);
         return "redirect:/error";
     }
 }
