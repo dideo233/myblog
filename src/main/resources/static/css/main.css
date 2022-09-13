@@ -24,7 +24,7 @@ a:hover {
 }
 
 body {
-  background-color: #fcf6f5;
+  background-color: #f5f5f4;
   font-family: "IM_Hyemin-Bold";
 }
 
@@ -159,9 +159,6 @@ body::-webkit-scrollbar-track {
   transition-duration: 0.7s;
 }
 
-.popular-card:hover .card-des-overlay {
-  top: 0%;
-}
 .popular-card:hover .card-description {
   top: 100%;
 }

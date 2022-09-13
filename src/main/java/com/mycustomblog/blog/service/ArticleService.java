@@ -46,7 +46,8 @@ public class ArticleService {
     private final CategoryRepository categoryRepository = null;
     @Autowired
     private final CategoryMapper categoryMapper = null;
-    private final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private final ModelMapper modelMapper = null;
     //글 작성
     @Transactional
     public void writeArticle(ArticleDTO articleDTO) {

@@ -8,8 +8,12 @@ import com.mycustomblog.blog.service.ArticleService;
 import com.mycustomblog.blog.service.ArticleTempService;
 import com.mycustomblog.blog.service.CategoryService;
 import com.mycustomblog.blog.service.CommentService;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +35,10 @@ public class ArticleController {
     private final CommentService commentService = null;
     @Autowired
     private final ArticleTempService articleTempService = null;
-
+    @Autowired
+    private final HtmlRenderer htmlRenderer = null;
+    @Autowired
+    private final Parser parser= null;
     //글 작성폼
     @GetMapping("article/write")
     public String writeArticleForm(ArticleDTO articleDTO, Model model){
@@ -57,7 +64,6 @@ public class ArticleController {
 
         articleService.writeArticle(articleDTO);
         articleTempService.deleteArticleTemp(); //글 작성 시 임시저장글 삭제
-
         return "redirect:/";
     }
 
@@ -79,6 +85,7 @@ public class ArticleController {
         model.addAttribute("commentVOs", commentVOs);
 
         ArticleVO article = articleService.viewAticle(articlenum);
+        article.setContent(htmlRenderer.render(parser.parse(article.getContent())));
         model.addAttribute("article", article);
 
         //조회수 카운트 - 브라우저마다 읽은 게시글 정보를 유지. 같은 브라우저에서의 연속적인 조회 카운트를 방지
@@ -115,8 +122,8 @@ public class ArticleController {
         PrincipalImpl principal = (PrincipalImpl) authentication.getPrincipal();
         articleDTO.setUsernum(principal.getUsernum());
         articleService.modifyArticle(articlenum, articleDTO);
-
         articleService.deleteCategory(categorynum);
+//        articleTempService.deleteArticleTemp();
         return "redirect:/";
     }
 
@@ -142,6 +149,14 @@ public class ArticleController {
         model.addAttribute("commentVOs", commentVOs);
 
         Page<ArticleVO> articles = articleService.getArticlePage(category, page);
+        for(ArticleVO article : articles){
+            String content = Jsoup.parse(htmlRenderer.render(parser.parse(article.getContent()))).text();
+            if(content.length()>300) {
+                content = content.substring(0, 300);
+            }
+            article.setContent(content);
+        }
+
         model.addAttribute("articles", articles);
 
         int startNumber = (int)Math.floor((((page-1) / articles.getSize()) * 5) + 1);
@@ -150,7 +165,6 @@ public class ArticleController {
         model.addAttribute("startNumber", startNumber);
         model.addAttribute("endNumber", endNumber);
         model.addAttribute("category",category);
-
         return "article/listByCategory";
     }
 
@@ -186,7 +200,16 @@ public class ArticleController {
     @GetMapping("/article/scroll/{pageNum}")
     public @ResponseBody
     List<ArticleVO> nextPage(@PathVariable int pageNum){
-        return articleService.getRecentArticles(pageNum).getContent();
+        System.out.println("무한 스크롤 테스트 중");
+        Slice<ArticleVO> recentArticles = articleService.getRecentArticles(pageNum);
+        for(ArticleVO article : recentArticles){
+            String content = Jsoup.parse(htmlRenderer.render(parser.parse(article.getContent()))).text();
+            if(content.length()>300) {
+                content = content.substring(0, 300);
+            }
+            article.setContent(content);
+        }
+        return recentArticles.getContent();
     }
 
     //조회한 게시글 정보 쿠키

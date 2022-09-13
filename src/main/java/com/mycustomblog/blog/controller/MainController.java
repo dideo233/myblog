@@ -6,6 +6,9 @@ import com.mycustomblog.blog.dto.CommentForSideVO;
 import com.mycustomblog.blog.service.ArticleService;
 import com.mycustomblog.blog.service.CategoryService;
 import com.mycustomblog.blog.service.CommentService;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
@@ -23,7 +26,10 @@ public class MainController {
     private final CategoryService categoryService = null;
     @Autowired
     private final CommentService commentService = null;
-
+    @Autowired
+    private final HtmlRenderer htmlRenderer = null;
+    @Autowired
+    private final Parser parser= null;
     //메인화면
     @GetMapping("/")
     public String index(Model model) {
@@ -37,9 +43,16 @@ public class MainController {
         //메인 최신글 및 인기글
         List<ArticleVO> popularArticles = articleService.getPopularArticles();
         Slice<ArticleVO> recentArticles = articleService.getRecentArticles(0);
+        for(ArticleVO article : recentArticles){
+            String content = Jsoup.parse(htmlRenderer.render(parser.parse(article.getContent()))).text();
+            if(content.length()>300) {
+                content = content.substring(0, 300);
+            }
+            article.setContent(content);
+        }
+
         model.addAttribute("popularArticles", popularArticles);
         model.addAttribute("recentArticles",recentArticles);
-
         return "index";
     }
 

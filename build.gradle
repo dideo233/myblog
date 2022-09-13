@@ -48,6 +48,10 @@ dependencies {
 	implementation 'org.kohsuke:github-api:1.303'
 	//객체 매핑용 라이브러리
 	implementation 'org.modelmapper:modelmapper:2.3.8'
+	//마크다운 파싱 및 html 렌더링 라이브러리
+	implementation 'com.atlassian.commonmark:commonmark:0.17.0'
+	//HTML 파싱용
+	implementation 'org.jsoup:jsoup:1.14.3'
 
 	//mybatis
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
