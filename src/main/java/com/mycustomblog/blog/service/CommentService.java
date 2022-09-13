@@ -25,22 +25,44 @@ public class CommentService {
     private final ArticleRepository articleRepository = null;
 
     //댓글 가져오기
+    //fix할 것 : 계층이 0인 댓글만 가져오기. 자식은 알아서 조인해서 반환할 테니
     public List<CommentVO> getCommentList(Long articlenum){
         List<Comment> commentList = commentRepository.findCommentsByArticlenum(articlenum);
-        List<CommentVO> commentVOs = new ArrayList<>();
 
+        List<CommentVO> commentVOs = new ArrayList<>();
         for (Comment comment : commentList) {
-            commentVOs.add(CommentVO.builder().comment(comment).build());
+            CommentVO commentVO = CommentVO.builder().comment(comment).build(); //부모 댓글
+            for(Comment cComment : comment.getChildCommentList()){ //부모 댓글에 자식 댓글 Set
+                commentVO.getCommentVOs().add(CommentVO.builder().comment(cComment).build());
+            }
+            commentVOs.add(commentVO);
         }
+
         return commentVOs;
     }
 
-    //댓글 작성
+    //부모 댓글 작성
     @Transactional
     public void saveParentComment(CommentDTO commentDto, Member member, Long articlenum){
         Article article = articleRepository.findByArticlenum(articlenum);
         Comment comment = Comment.builder()
                 .article(article)
+                .tier(0)
+                .content(commentDto.getContent())
+                .member(member)
+                .build();
+        commentRepository.save(comment);
+    }
+
+    //자식 댓글 작성
+    @Transactional
+    public void saveChildComment(CommentDTO commentDto, Member member, Long articlenum, Long parentCommentnum){
+        Comment parentComment = commentRepository.findById(parentCommentnum).get();
+        Article article = articleRepository.findByArticlenum(articlenum);
+        Comment comment = Comment.builder()
+                .article(article)
+                .parent(parentComment)
+                .tier(1)
                 .content(commentDto.getContent())
                 .member(member)
                 .build();

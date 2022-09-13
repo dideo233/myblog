@@ -25,21 +25,27 @@ public class CommentController {
         return commentVOs;
     }
 
-    //댓글 작성
+    //부모 댓글 작성
     @PostMapping("/comment/write")
     @ResponseBody
     public List<CommentVO> writeComment(@RequestParam Long articlenum,
-                                          @RequestBody CommentDTO commentDto,
-                                          Authentication authentication){
+                                        @RequestParam(required = false) Long parentCommentnum,
+                                        @RequestBody CommentDTO commentDto,
+                                        Authentication authentication){
         PrincipalImpl principal = (PrincipalImpl) authentication.getPrincipal();
         Member member = principal.getMember();
 
-        commentService.saveParentComment(commentDto, member, articlenum);
+        if(parentCommentnum == null) {
+            commentService.saveParentComment(commentDto, member, articlenum);
+        } else {
+            commentService.saveChildComment(commentDto, member, articlenum, parentCommentnum);
+        }
 
         List<CommentVO> commentList = commentService.getCommentList(articlenum);
         return commentList;
     }
 
+    //자식 댓글 작성
 
     //댓글 삭제
     @PostMapping("/comment/delete")
