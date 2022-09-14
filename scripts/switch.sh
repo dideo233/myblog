@@ -12,6 +12,5 @@ function switch_proxy() {
   echo "set \$service_url http://127.0.0.1:${IDLE_PORT};" | sudo tee /etc/nginx/conf.d/service-url.inc
 
   echo " > 엔진엑스 Reload"
-  sudo service nginx reload
-  #restart는 끊김이 있으나 reload는 끊김이 없음. 중요 설정은 반영되지 않으나 외부 설정 파일을 불러오는 것이라 reolad 사용 가능한 것
+  sudo service nginx reload  #restart는 끊김이 있으나 reload는 끊김이 없음. 중요 설정은 반영되지 않으나 외부 설정 파일을 불러오는 것이라 reolad 사용 가능한 것
 }
