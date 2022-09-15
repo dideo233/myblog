@@ -9,7 +9,7 @@ REPOSITORY=/home/ec2-user/app3/myblog/
 PROJECT_NAME=myblog
 
 echo "> Build 파일 복사"
-echo "> cp $REPOSITORY/zip/*.jar $REPOSITORY/"
+echo "> cp $REPOSITORY/zip/*.jar $REPOSITORY"
 
 cp $REPOSITORY/zip/*.jar $REPOSITORY/
 

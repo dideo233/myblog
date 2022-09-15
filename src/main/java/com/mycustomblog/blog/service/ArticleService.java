@@ -75,7 +75,7 @@ public class ArticleService {
 
     //디폴트 섬네일
     private String makeDefaultThumb(String thumbnailUrl) {
-        String defaultThumbUrl = "https://raw.githubusercontent.com/dideo233/imageRepo/main/image/f69280db-1efc-41cf-9710-4087ed1fa573.jpg";
+        String defaultThumbUrl = "https://raw.githubusercontent.com/dideo233/imgRepo/main/image/e3b9569d-6837-4dc7-8b57-ee7333c95b2b.jpg";
         if (thumbnailUrl == null || thumbnailUrl.equals("")) {
             thumbnailUrl = defaultThumbUrl;
         }
