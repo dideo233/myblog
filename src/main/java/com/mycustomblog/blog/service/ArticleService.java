@@ -173,8 +173,7 @@ public class ArticleService {
 
         repository.createContent().path("image/"+storeFileName)
                 .content(multipartFile.getBytes()).message("image Upload").branch("main").commit();
-
-        String uploadedUrl = "https://raw.githubusercontent.com/"+gitRepo +imgUrl +storeFileName;
+        String uploadedUrl = imgUrl +storeFileName;
         return uploadedUrl;
     }
 
